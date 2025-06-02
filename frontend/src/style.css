@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+.box {
+  @apply border border-gray-400 rounded-2xl;
+}
