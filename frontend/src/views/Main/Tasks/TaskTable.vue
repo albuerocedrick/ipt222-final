@@ -13,7 +13,7 @@
             </thead>
             <tbody>
                 <!-- row 1 -->
-                <tr>
+                <tr v-for="table in tables" :key="table.task_id">
                     <td>{{ table.title }}</td>
                     <td>
                         <div :class="['badge badge-outline border-2', 
@@ -27,9 +27,9 @@
                             {{ table.status }}
                         </div>
                     </td>
-                    <td>{{ table.project }}</td>
-                    <td>{{ table.startDate }}</td>
-                    <td>{{ table.endDate }}</td>
+                    <td>{{ table.project_name }}</td>
+                    <td>{{ table.start_date }}</td>
+                    <td>{{ table.due_date }}</td>
                 </tr>
             </tbody>
         </table>
@@ -37,16 +37,37 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
     data() {
         return {
-            table: {
-                title: '',
-                status: '',
-                project: '',
-                startDate: '',
-                endDate: '',
+            tables: []
+        }
+    },
+    mounted() {
+        this.FetchTasks();
+    },
+    methods: {
+        async FetchTasks() {
+            const res = await axios.get('http://localhost/IPT_FINAL_PROJ/backend/index.php/fetchtask',{params:{ user_id: this.GetUserIDFromLocal()}});
+
+            if(res.data.success) {
+                this.tables = res.data.data;
+            } else {
+                this.error = 'Something went wrong during fetch';
+                this.success = '';
+                alert(this.error);
+            }
+        },
+        GetUserIDFromLocal() {
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if(user && user.id) {
+                return user.id;
+            } else {
+                this.error = "Failed to get user id";
+                alert(this.error);
             }
         }
     }
