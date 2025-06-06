@@ -51,11 +51,11 @@ const routes = [
           name: 'Projects',
           component: Projects
         },
-        {
-          path: 'calendar',
-          name: 'Calendar',
-          component: Calendar
-        },
+        // {
+        //   path: 'calendar',
+        //   name: 'Calendar',
+        //   component: Calendar
+        // },
         
       ]
     },

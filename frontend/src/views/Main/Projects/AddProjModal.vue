@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn rounded-2xl box bg-[#97ddcd] font-medium mb-2" onclick="my_modal_3.showModal()">
+        <button class="btn rounded-2xl box bg-[#50b9a1] font-medium mb-2" onclick="my_modal_3.showModal()">
             <p class="font-bold text-xl pb-1">+</p>
             <p>New Folder</p>
         </button>
