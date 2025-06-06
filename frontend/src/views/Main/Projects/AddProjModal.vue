@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn rounded-2xl box bg-[#97ddcd] font-medium" onclick="my_modal_3.showModal()">
+        <button class="btn rounded-2xl box bg-[#97ddcd] font-medium mb-2" onclick="my_modal_3.showModal()">
             <p class="font-bold text-xl pb-1">+</p>
             <p>New Folder</p>
         </button>
@@ -57,6 +57,8 @@ export default {
                 this.error = '';
                 alert(this.success);
                 
+                this.$bus.$emit("refresh-projects");
+
                 this.CloseModal();
             } else {
                 this.success = '';

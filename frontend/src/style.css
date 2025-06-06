@@ -8,6 +8,14 @@
   font-style: normal;
 }
 
+/* Hide scrollbar in modern browsers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
 
 .box {
   @apply border border-gray-400 rounded-2xl;

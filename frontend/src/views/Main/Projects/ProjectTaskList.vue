@@ -1,22 +1,25 @@
 <template>
-    <div class="box bg-[#ebe8e2] flex flex-col items-center ">
-        <div class="flex flex-row justify-between mb-4 bg-[#62d5ba] rounded-t-2xl h-20 items-center px-4 w-full"> 
-            <p :class="['font-semibold text-2xl']">Tasks</p>
+    <div class="h-full bg-[#ebe8e2] flex flex-col overflow-hidden box">
+        <!-- Fixed Header -->
+        <div class="flex flex-row justify-between bg-[#62d5ba] rounded-t-2xl h-20 items-center px-4 flex-shrink-0"> 
+            <p class="font-semibold text-2xl">Tasks</p>
         </div>
 
-        <div class="collapse bg-base-100 box mb-2 mx-2 w-11/12 overflow-visible relative" v-for="folder in folders" :key="folder.project_id">
-            <input type="radio" name="my-accordion-2" checked="checked" />
-            
-            <div class="collapse-title font-semibold flex flex-row items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                </svg>
-                <p class="pl-2">{{ folder.project_name }}</p>
-            </div>
+        <!-- Scrollable Content Area -->
+        <div class="flex-1 overflow-y-auto px-2 py-2">
+            <div class="collapse bg-base-100 box mb-2 w-full relative" v-for="folder in folders" :key="folder.project_id">
+                <input type="radio" name="my-accordion-2" checked="checked" />
+                
+                <div class="collapse-title font-semibold flex flex-row items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                    </svg>
+                    <p class="pl-2">{{ folder.project_name }}</p>
+                </div>
 
-            <div class="collapse-content text-sm overflow-visible relative z-10">
-                <div class="mb-2 flex flex-row justify-between"> 
-                    <p><b>Project ID:</b> {{ folder.project_id }}-{{ folder.owner_id }}</p>
+                <div class="collapse-content text-sm overflow-visible relative z-10">
+                    <div class="mb-2 flex flex-row justify-between"> 
+                        <p><b>Project ID:</b> {{ folder.project_id }}-{{ folder.owner_id }}</p>
 
                         <button @click="openDialog(folder.project_id)">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
@@ -34,12 +37,12 @@
                                 <p class="py-2 pl-4 font-semibold">Collaborators:</p>
                             </div>
                         </dialog>
-                </div>
+                    </div>
 
-                <p><b>Description:</b> {{ folder.description }}</p>
+                    <p><b>Description:</b> {{ folder.description }}</p>
+                </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -57,6 +60,10 @@ export default {
     },
     mounted() {
         this.ProjectInfo();
+        this.$bus.$on("refresh-projects", this.ProjectInfo);
+    },
+    beforeUnmount() {
+        this.$bus.$off("refresh-projects", this.ProjectInfo)
     },
     methods: {
         async ProjectInfo() {  
