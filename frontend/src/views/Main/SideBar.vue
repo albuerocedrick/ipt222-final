@@ -1,12 +1,12 @@
 <template>
-    <div class="box w-[300px] flex flex-col justify-between bg-[#EBE8E2] mb-4">
+    <div class="box w-[300px] flex flex-col justify-between bg-[#ebe8e2] mb-4">
         <div class="w-full">
             <ul class="w-19/20 px-4 pt-4">
                 <li v-for="(item, index) in menuItems" :key="index" class="mb-2">
                 <router-link
                   :to="item.path"
-                  class="flex items-center p-4 rounded-lg hover:bg-[#a2cffe]/30 transition-colors"
-                  :class="{'bg-[#a2cffe]':  item.path === $route.path }">
+                  class="flex items-center p-4 rounded-lg hover:bg-[#97ddcd]/30 transition-colors"
+                  :class="[{' bg-[#97ddcd]':  item.path === $route.path }, {' shadow-md':  item.path === $route.path }]">
                     <span :class="['mr-3' ] " v-html="item.icon"></span>
                     <span class=" font-medium text-xl" >{{item.name }}</span>
                 </router-link>

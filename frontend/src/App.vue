@@ -9,7 +9,7 @@
   <!-- TODO: dashboard backend -->
 
 <script>
-
 export default {
+   
 }
 </script>

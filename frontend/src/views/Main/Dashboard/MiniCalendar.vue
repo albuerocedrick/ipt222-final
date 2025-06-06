@@ -1,7 +1,7 @@
 <template>
     <div class="col-span-2 row-span-2 rounded-2xl bg-[#EBE8E2]">
         <div :class="['mini-calendar p-4 box w-full rounded-lg h-full flex flex-col', 'box ']">
-            <div class="header flex justify-between items-center mb-3 bg-[#a2cffe] rounded-lg px-2">
+            <div class="header flex justify-between items-center mb-3 bg-[#62d5ba] rounded-lg px-2">
                 <button @click="prevMonth" class="text-lg p-1  font-bold">&lt;</button>
                 <span class="font-bold text-base ">{{ monthName }} {{ year }}</span>
                 <button @click="nextMonth" class="text-lg p-1  font-bold">&gt;</button>
@@ -17,7 +17,7 @@
                     'date py-2 text-md font-medium cursor-pointer flex justify-center text-center items-center',
                     {
                         'text-gray-500': !date.isCurrentMonth,
-                        'bg-[#a2cffe] rounded-full': date.isToday,
+                        'bg-[#62d5ba] rounded-full': date.isToday,
                         'bg-gray-200 rounded-full': isSelected(date) && !date.isToday
                     },
                     !date.isToday && !isSelected(date) && date.isCurrentMonth ? 'text-black' : ''

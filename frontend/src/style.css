@@ -1,6 +1,18 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@font-face {
+  font-family: 'LazyDog';
+  src: url('./assets/fonts/lazy_dog.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 .box {
   @apply border border-gray-400 rounded-2xl;
+}
+
+.lazy-dog {
+  font-family: 'LazyDog', sans-serif;
 }
