@@ -1,7 +1,8 @@
 <template> 
   <div class="h-full flex flex-col">
-    <div class="flex-shrink-0">
+    <div class="flex-shrink-0 flex flex-row gap-4">
       <add-proj-modal />
+      <join-project-modal />
     </div>
     <div class="flex-1 flex flex-row gap-4 min-h-0">
         <project-task-list class="w-2/5 h-full"/>
@@ -14,12 +15,14 @@
 import ProjectTaskList from './Projects/ProjectTaskList.vue';
 import ProjectTask from './Projects/ProjectTask.vue';
 import AddProjModal from './Projects/AddProjModal.vue';
+import JoinProjectModal from './Projects/JoinProjectModal.vue';
 
 export default {
   components: { 
     ProjectTask,
     ProjectTaskList,
     AddProjModal,
+    JoinProjectModal,
   },
   data() {
     return {

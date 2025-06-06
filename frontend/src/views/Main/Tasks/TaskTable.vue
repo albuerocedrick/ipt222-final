@@ -14,51 +14,41 @@
             <tbody>
                 <!-- row 1 -->
                 <tr>
-                    <td>Assignment QUAMETH</td>
+                    <td>{{ table.title }}</td>
                     <td>
-                        <div class="badge badge-outline !border-yellow-500 text-yellow-500">
-                            Near Deadline
+                        <div :class="['badge badge-outline border-2', 
+                                    {'!border-yellow-500 text-yellow-500': table.status == 'Near Deadline'},
+                                    {'!border-blue-500 text-blue-500': table.status == 'Not Started'},
+                                    {'!border-gray-500 text-gray-500': table.status == 'In Progress'},
+                                    {'!border-orange-500 text-orange-500': table.status == 'Finished Late'},
+                                    {'!border-green-500 text-green-500': table.status == 'Done'},
+                                    {'!border-red-500 text-red-500': table.status == 'Missed'},
+                                    ]">
+                            {{ table.status }}
                         </div>
                     </td>
-                    <td>QUAMETH</td>
-                    <td>May 28, 2025</td>
-                    <td>May 30, 2025</td>
-                </tr>
-                <tr>
-                    <td>Assignment QUAMETH</td>
-                    <td>
-                        <div class="badge badge-outline !border-green-500 text-green-500">
-                            Done
-                        </div>
-                    </td>
-                    <td>QUAMETH</td>
-                    <td>May 25, 2025</td>
-                    <td>June 1, 2025</td>
-                </tr>
-                
-                <tr>
-                    <td>Assignment QUAMETH</td>
-                    <td>
-                        <div class="badge badge-outline !border-gray-500 text-gray-500">
-                           In Progress
-                        </div>
-                    </td>
-                    <td>QUAMETH</td>
-                    <td>May 28, 2025</td>
-                    <td>June 2, 2025</td>
-                </tr>
-                <tr>
-                    <td>Assignment QUAMETH</td>
-                    <td>
-                        <div class="badge badge-outline !border-blue-500 text-blue-500">
-                            Not Started
-                        </div>
-                    </td>
-                    <td>QUAMETH</td>
-                    <td>May 31, 2025</td>
-                    <td>June 2, 2025</td>
+                    <td>{{ table.project }}</td>
+                    <td>{{ table.startDate }}</td>
+                    <td>{{ table.endDate }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </template>
+
+<script>
+
+export default {
+    data() {
+        return {
+            table: {
+                title: '',
+                status: '',
+                project: '',
+                startDate: '',
+                endDate: '',
+            }
+        }
+    }
+}
+</script>
