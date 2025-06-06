@@ -20,5 +20,20 @@ class Project {
             "message" => 'Folder Created Successfully'
         ];
     }
+
+    public function FetchProject($user_id) {
+        $stmt = $this->conn->prepare("SELECT projects.project_id, owner_id, project_name, description 
+                                        FROM projects LEFT JOIN collaborators
+                                        ON projects.project_id = collaborators.project_id
+                                        WHERE collaborators.user_id = ? OR projects.owner_id = ? ");
+        $stmt->execute([$user_id, $user_id]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return [
+            "data" => $result,
+            "success" => true,
+            "message" => 'Fetch Successful'
+        ];
+    }
 }
 ?>

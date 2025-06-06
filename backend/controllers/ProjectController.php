@@ -24,6 +24,9 @@ switch($method) {
         }
         break;
     case 'GET':
+        if($action == 'fetch') {
+            echo json_encode($project->FetchProject($_GET['user_id']));
+        }
         break;
     case 'PUT':
         break;
