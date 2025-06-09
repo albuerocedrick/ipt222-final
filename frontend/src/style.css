@@ -189,7 +189,7 @@
 }
 
 .box {
-  @apply border border-gray-400 rounded-2xl;
+  @apply  border-gray-400 rounded-4xl;
 }
 
 .lazy-dog {

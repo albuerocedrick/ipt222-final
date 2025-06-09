@@ -1,20 +1,20 @@
 <template>
     <div class="h-screen p-4 flex justify-center items-center">
-        <div class="box bg-[#EBE8E2] h-3/5 lg:w-1/2 w-full lg:flex lg:flex-row ">
-            <div class="lg:w-3/5 h-full flex flex-col gap-4 justify-center items-center text-center px-4">
+        <div class="box bg-base-100 h-3/5 lg:w-1/2 w-full lg:flex lg:flex-row ">
+            <div class="lg:w-3/5 h-full flex flex-col gap-4 justify-center items-center text-center px-4 text-base-content">
                 <h1 class="font-bold lg:text-5xl text-4xl mb-8">Create an Account</h1>
                 <form class="flex flex-col gap-4 w-full items-center" @submit.prevent="SignUp">
-                    <input v-model="form.username" type="text" placeholder="Username" class="input rounded-2xl focus:outline-0 lg:w-3/5 w-9/10 h-12 font-medium" /> 
-                    <input v-model="form.email" type="email" placeholder="Email" class="input rounded-2xl focus:outline-0 lg:w-3/5 w-9/10 h-12 font-medium" /> 
-                    <input v-model="form.password" type="password" placeholder="Password" class="input rounded-2xl focus:outline-0 lg:w-3/5 w-9/10 h-12 font-medium" /> 
-                    <input v-model="form.repPassword" type="password" placeholder="Repeat Password" class="input rounded-2xl focus:outline-0 lg:w-3/5 w-9/10 h-12 font-medium" />
-                    <button class="h-12 w-2/5 bg-[#97ddcd] rounded-2xl font-medium mt-4 shadow-md hover-effect" type="submit">Sign Up</button>
+                    <input v-model="form.username" type="text" placeholder="Username" class="input rounded-2xl focus:outline-0 lg:w-3/5 bg-base-200 w-9/10 h-12 font-medium" /> 
+                    <input v-model="form.email" type="email" placeholder="Email" class="input rounded-2xl focus:outline-0 lg:w-3/5 bg-base-200 w-9/10 h-12 font-medium" /> 
+                    <input v-model="form.password" type="password" placeholder="Password" class="input rounded-2xl focus:outline-0 lg:w-3/5 bg-base-200 w-9/10 h-12 font-medium" /> 
+                    <input v-model="form.repPassword" type="password" placeholder="Repeat Password" class="input rounded-2xl focus:outline-0 lg:w-3/5 bg-base-200 w-9/10 h-12 font-medium" />
+                    <button class="h-12 w-2/5 bg-primary rounded-2xl font-medium mt-4 shadow-md hover-effect text-primary-content" type="submit">Sign Up</button>
                 </form>
             </div>
-            <div class="hidden w-2/5 bg-[#62d5ba] rounded-r-2xl lg:flex flex-col justify-center items-center text-center gap-8 px-12">
-                <h1 class="text-4xl font-bold text-white">Welcome back! </h1>
-                <p class="font-medium text-white text-lg ">Sign in to continue tracking your tasks with ease.</p>
-                <button class="h-12 w-2/5 border-2 text-white hover-effect border-white rounded-2xl font-medium mt-4" @click="GoToLogIn">Log In</button>
+            <div class="hidden w-2/5 bg-primary text-primary-content rounded-r-2xl lg:flex flex-col justify-center items-center text-center gap-8 px-12">
+                <h1 class="text-4xl font-bold ">Welcome back! </h1>
+                <p class="font-medium  text-lg ">Sign in to continue tracking your tasks with ease.</p>
+                <button class="h-12 w-2/5 border-2  hover-effect border-primary-content rounded-2xl font-medium mt-4" @click="GoToLogIn">Log In</button>
             </div>
         </div>
     </div>
