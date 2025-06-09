@@ -1,13 +1,13 @@
 <template>
 <div :class=" [ 'h-20 bg-base-100', 'box', 'flex', 'flex-row', 'items-center', 'justify-between']">
-        <h1 :class="['font-bold', 'lg:text-2xl md:text-xl text-sm', 'm-8', 'text-black']">  ActTrack</h1>
+        <h1 :class="['font-bold', 'lg:text-2xl md:text-xl text-sm', 'm-8', 'text-base-content']">  ActTrack</h1>
         <ul v-if="$route.path === '/'" class="flex flex-row justify-evenly lg:w-1/7 w-3/8">
             <li
               v-for="(page, index) in pages"
               :key="index">
                 <router-link
                   :to="page.url"
-                  :class="['font-medium text-sm ', {' px-4 py-4 rounded-md bg-primary shadow-md text-white hover-effect': page.label === 'Sign Up'}]"> {{ page.label }} </router-link>
+                  :class="['font-medium text-sm', {' px-4 py-4 rounded-md bg-primary shadow-md text-primary-content hover-effect': page.label === 'Sign Up'}]"> {{ page.label }} </router-link>
             </li>
         </ul>
         <div v-else class="dropdown dropdown-end">

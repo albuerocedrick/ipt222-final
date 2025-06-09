@@ -8,7 +8,6 @@
 @plugin "daisyui/theme" {
   name: "green-task";
   default: false;
-  prefersdark: false;
   color-scheme: "light";
   
   /* Base Colors - Clean Backgrounds */
@@ -57,6 +56,114 @@
   --border: 1px;
   --depth: 2;
   --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "green-task-dark";
+  default: false;
+  color-scheme: "dark";
+  
+  /* Base Colors - Dark Backgrounds */
+  --color-base-100: oklch(15% 0.01 220);                /* Very Dark Gray #111827 */
+  --color-base-200: oklch(19% 0.01 220);                /* Dark Gray #1f2937 */
+  --color-base-300: oklch(25% 0.01 220);                /* Medium Dark Gray #374151 */
+  --color-base-content: oklch(90% 0.01 0);              /* Light text on dark */
+
+  /* Primary Colors - Bright Green maintained for visibility */
+  --color-primary: oklch(58% 0.15 142);                 /* Fresh Green */
+  --color-primary-content: oklch(18% 0.02 220);         /* Dark text on green */
+
+  /* Secondary Colors */
+  --color-secondary: oklch(68% 0.12 173);               /* Brighter Teal for dark mode */
+  --color-secondary-content: oklch(18% 0.02 220);       /* Dark text on teal */
+
+  /* Accent Colors */
+  --color-accent: oklch(70% 0.16 84);                   /* Brighter Lime for dark mode */
+  --color-accent-content: oklch(18% 0.02 220);          /* Dark text on lime */
+
+  /* Neutral Colors - Light for Dark Theme */
+  --color-neutral: oklch(85% 0.01 0);                   /* Light Gray */
+  --color-neutral-content: oklch(18% 0.02 220);         /* Dark text */
+
+  /* State Colors adjusted for dark mode */
+  --color-info: oklch(68% 0.15 217);                    /* Bright Blue */
+  --color-info-content: oklch(100% 0 0);                /* White text on blue */
+  
+  --color-success: oklch(58% 0.15 142);                 /* Success Green */
+  --color-success-content: oklch(18% 0.02 220);         /* Dark text on green */
+  
+  --color-warning: oklch(75% 0.15 43);                  /* Golden Yellow */
+  --color-warning-content: oklch(18% 0.02 220);         /* Dark text on yellow */
+  
+  --color-error: oklch(63% 0.17 0);                     /* Modern Red */
+  --color-error-content: oklch(100% 0 0);               /* White text on red */
+
+  /* Border Radius */
+  --radius-selector: 0.75rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+
+  /* Size and Border */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 2;
+  --noise: 0;
+}
+
+/* Custom utility classes for task management components */
+.task-priority-low { 
+  @apply bg-green-400 text-green-900 badge; 
+}
+
+.task-priority-medium { 
+  @apply bg-amber-400 text-amber-900 badge; 
+}
+
+.task-priority-high { 
+  @apply bg-orange-400 text-orange-900 badge; 
+}
+
+.task-priority-urgent { 
+  @apply bg-red-400 text-red-900 badge; 
+}
+
+.task-status-todo { 
+  @apply bg-gray-400 text-gray-900 badge; 
+}
+
+.task-status-progress { 
+  @apply bg-blue-400 text-blue-900 badge; 
+}
+
+.task-status-review { 
+  @apply bg-purple-400 text-purple-900 badge; 
+}
+
+.task-status-done { 
+  @apply bg-green-500 text-white badge; 
+}
+
+/* Enhanced task card styling */
+.task-card {
+  @apply card bg-base-100 shadow-lg hover:shadow-xl transition-all duration-300;
+  border-left: 4px solid oklch(var(--color-primary));
+}
+
+.task-card-urgent {
+  border-left-color: oklch(var(--color-error));
+}
+
+.task-card-high {
+  border-left-color: oklch(70% 0.15 25);
+}
+
+.task-card-medium {
+  border-left-color: oklch(var(--color-warning));
+}
+
+.task-card-low {
+  border-left-color: oklch(var(--color-success));
 }
 
 

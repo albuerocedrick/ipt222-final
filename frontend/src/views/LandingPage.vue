@@ -1,8 +1,8 @@
 <template>
-    <div class="p-4">
+    <div class="p-4 h-screen">
         <nav-bar />
         <hero-section />
-        <features />
+        <!-- <features /> -->
     </div>
 </template>
 
