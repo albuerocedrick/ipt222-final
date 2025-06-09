@@ -1,8 +1,8 @@
 <template>
     <div>
-        <button class="btn rounded-2xl box bg-[#50b9a1] font-medium mb-2" onclick="my_modal_3.showModal()">
+        <button class="btn rounded-2xl box bg-[#97ddcd] font-medium mb-2" onclick="my_modal_3.showModal()">
             <p class="font-bold text-xl pb-1">+</p>
-            <p>New Folder</p>
+            <p>New Project</p>
         </button>
 
         <dialog ref="myModal" id="my_modal_3" class="modal">
@@ -20,7 +20,7 @@
                                 <textarea v-model="form.description" id="desc" type="text" rows="4" class="input rounded-2xl focus:outline-0 w-full h-38 p-2 font-medium" />
                             </div>
                     </div>
-                    <button type="submit" class="btn bg-[#50b9a1] rounded-2xl mt-4 border-gray-400" @click="$refs.myModal.close()">Add Folder</button>
+                    <button type="submit" class="btn bg-[#50b9a1] rounded-2xl mt-4 border-gray-400" @click="$refs.myModal.close()">Add Project</button>
                 </form>
                 
             </div>

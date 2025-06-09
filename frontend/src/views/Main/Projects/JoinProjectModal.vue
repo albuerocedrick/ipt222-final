@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn rounded-2xl box bg-[#50b9a1] font-medium mb-2" onclick="my_modal.showModal()">
+        <button class="btn rounded-2xl box bg-[#97ddcd] font-medium mb-2" onclick="my_modal.showModal()">
             <p class="font-bold text-xl pb-1">+</p>
             <p>Join Project</p>
         </button>
@@ -16,7 +16,7 @@
                                 <input v-model="id" id="id" type="text" placeholder="1111-1111" class="input rounded-2xl focus:outline-0 w-full h-12 font-medium" />
                             </div>
                     </div>
-                    <button type="submit" class="btn bg-[#50b9a1] rounded-2xl mt-2 border-gray-400" @click="$refs.myModal.close()">Add Folder</button>
+                    <button type="submit" class="btn bg-[#50b9a1] rounded-2xl mt-2 border-gray-400" @click="$refs.myModal.close()">Join</button>
                 </form>
                 
             </div>

@@ -2,13 +2,13 @@
     <div class="h-full bg-[#ebe8e2] flex flex-col overflow-hidden box">
         <!-- Fixed Header -->
         <div class="flex flex-row justify-between bg-[#62d5ba] rounded-t-2xl h-20 items-center px-4 flex-shrink-0"> 
-            <p class="font-semibold text-2xl">Tasks</p>
+            <p class="font-semibold text-2xl">Projects</p>
         </div>
 
         <!-- Scrollable Content Area -->
         <div class="flex-1 overflow-y-auto px-2 py-2">
-            <div class="collapse bg-base-100 box mb-2 w-full relative" v-for="folder in folders" :key="folder.project_id">
-                <input type="radio" name="my-accordion-2" checked="checked" />
+            <div class="collapse bg-base-300 box mb-2 w-full relative" v-for="folder in folders" :key="folder.project_id">
+                <input type="radio" name="my-accordion-2" v-model="activeProjectID" :value="folder.project_id" />
                 
                 <div class="collapse-title font-semibold flex flex-row items-center justify-between">
                     <div class="flex flex-row items-center">
@@ -38,7 +38,7 @@
 
                 <div class="collapse-content text-sm overflow-visible relative z-10">
                     <div class="mb-2 flex flex-row justify-between"> 
-                        <p><b>Project ID:</b> {{ folder.project_id }}-{{ folder.owner_id }}</p>
+                        <p><b>Project ID:</b> {{ folder.project_id }}</p>
 
                         
                     </div>
@@ -61,6 +61,7 @@ export default {
             error: '',
             success: '',
             openDropdown: null,
+            activeProjectID: null,
         }
     },
     mounted() {
@@ -102,6 +103,15 @@ export default {
                 dialog.showModal();
             }
         },
-    }
+        
+    },
+    watch: {
+        activeProjectID(newVal) {
+            if (newVal !== null) {
+            const openedFolder = this.folders.find(f => f.project_id === newVal);
+            this.$bus.$emit("FetchTasksByProj", openedFolder.project_id);
+            }
+        }
+    },
 }
 </script>

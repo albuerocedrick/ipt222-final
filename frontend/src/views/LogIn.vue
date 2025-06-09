@@ -6,13 +6,13 @@
                 <form class="flex flex-col w-full items-center gap-4" @submit.prevent="Login">
                     <input v-model="form.email" type="email" placeholder="Email" class="input rounded-2xl focus:outline-0 lg:w-3/5 w-9/10 h-12 font-medium" /> 
                     <input v-model="form.password" type="password" placeholder="Password" class="input rounded-2xl focus:outline-0 lg:w-3/5 w-9/10 h-12 font-medium" /> 
-                    <button type="submit" class="h-12 w-2/5 bg-[#50b9a1] rounded-2xl font-medium mt-4 shadow-md">Log In</button>
+                    <button type="submit" class="h-12 w-2/5 bg-[#97ddcd] shadow-md rounded-2xl font-medium mt-4 hover-effect">Log In</button>
                 </form>
             </div>
             <div class="hidden w-2/5 bg-[#62d5ba] rounded-r-2xl lg:flex flex-col justify-center items-center text-center gap-8 px-12">
                 <h1 class="text-4xl font-bold text-white">New to Assignment and Activity Tracker? </h1>
                 <p class="font-medium text-white text-lg ">Create an account and manage your tasks with ease.</p>
-                <button class="h-12 w-2/5 border-2 text-white border-white rounded-2xl font-medium mt-4" @click="GoToSignUp">Sign Up</button>
+                <button class="h-12 w-2/5 border-2 text-white border-white rounded-2xl font-medium mt-4 hover-effect" @click="GoToSignUp">Sign Up</button>
             </div>
         </div>
     </div>

@@ -1,12 +1,76 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+
+/* DaisyUI Theme Plugin: Bright Green Task Manager 
+   Add this to your style.css file under @plugin "daisyui" */
+
+@plugin "daisyui/theme" {
+  name: "green-task";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
+  
+  /* Base Colors - Clean Backgrounds */
+  --color-base-100: oklch(100% 0 0);                    /* Pure White */
+  --color-base-200: oklch(96% 0.03 142);                /* Very Light Green Tint */
+  --color-base-300: oklch(91% 0.05 142);                /* Light Green Tint */
+  --color-base-content: oklch(18% 0.02 220);            /* Dark Gray Text */
+
+  /* Primary Colors - Bright Modern Green */
+  --color-primary: oklch(58% 0.15 142);                 /* Fresh Green #22c55e */
+  --color-primary-content: oklch(100% 0 0);             /* White text on green */
+
+  /* Secondary Colors - Complementary Teal */
+  --color-secondary: oklch(63% 0.12 173);               /* Modern Teal #14b8a6 */
+  --color-secondary-content: oklch(100% 0 0);           /* White text on teal */
+
+  /* Accent Colors - Vibrant Lime */
+  --color-accent: oklch(65% 0.16 84);                   /* Bright Lime #65a30d */
+  --color-accent-content: oklch(100% 0 0);              /* White text on lime */
+
+  /* Neutral Colors - Modern Gray Scale */
+  --color-neutral: oklch(25% 0.02 220);                 /* Dark Gray */
+  --color-neutral-content: oklch(100% 0 0);             /* White text on dark */
+
+  /* State Colors for Task Management */
+  --color-info: oklch(68% 0.15 217);                    /* Bright Blue #3b82f6 */
+  --color-info-content: oklch(100% 0 0);                /* White text on blue */
+  
+  --color-success: oklch(55% 0.17 142);                 /* Success Green #15803d */
+  --color-success-content: oklch(100% 0 0);             /* White text on green */
+  
+  --color-warning: oklch(75% 0.15 43);                  /* Golden Yellow #fbbf24 */
+  --color-warning-content: oklch(15% 0.02 43);          /* Dark text on yellow */
+  
+  --color-error: oklch(63% 0.17 0);                     /* Modern Red #ef4444 */
+  --color-error-content: oklch(100% 0 0);               /* White text on red */
+
+  /* Border Radius */
+  --radius-selector: 0.75rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+
+  /* Size and Border */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 2;
+  --noise: 0;
+}
+
+
 @font-face {
   font-family: 'LazyDog';
   src: url('./assets/fonts/lazy_dog.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
+
+.hover-effect {
+  @apply transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg 
+}
+
 
 /* Hide scrollbar in modern browsers */
 .no-scrollbar::-webkit-scrollbar {

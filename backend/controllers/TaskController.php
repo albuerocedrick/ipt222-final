@@ -20,8 +20,10 @@ switch($method) {
     case 'POST':
         break;
     case 'GET':
-        if($action == 'fetchtask') {
+        if($action == 'fetchalltask') {
             echo json_encode($task->FetchTasks($_GET['user_id']));
+        } else if($action == 'fetchtaskbyprojid') {
+            echo json_encode($task->FetchTasksByProj($_GET['project_id']));
         }
         break;
     case 'PUT':
