@@ -1,12 +1,15 @@
 <template>
-    <div class="box w-[300px] flex flex-col justify-between bg-[#ebe8e2] mb-4">
+    <div class="box w-[350px] flex flex-col justify-between bg-base-100 mb-4">
         <div class="w-full">
-            <ul class="w-19/20 px-4 pt-4">
-                <li v-for="(item, index) in menuItems" :key="index" class="mb-2">
+            <div class="h-16 border-b border-neutral/30">
+                <h1 :class="['font-bold', 'lg:text-3xl md:text-xl text-sm', 'm-8', 'text-base-content']">  ActTrack</h1>
+            </div>
+            <ul class="">
+                <li v-for="(item, index) in menuItems" :key="index" class="">
                 <router-link
                   :to="item.path"
-                  class="flex items-center p-4 rounded-lg hover:bg-[#97ddcd]/30 transition-colors"
-                  :class="[{' bg-[#97ddcd]':  item.path === $route.path }, {' shadow-md':  item.path === $route.path }]">
+                  class="flex items-center p-4 hover:bg-primary/50 transition-colors border-b border-neutral/30"
+                  :class="[{'border-l-8 border-primary bg-primary/85 text-primary-content':  item.path === $route.path }]">
                     <span :class="['mr-3' ] " v-html="item.icon"></span>
                     <span class=" font-medium text-xl" >{{item.name }}</span>
                 </router-link>
@@ -14,9 +17,9 @@
             </ul>
         </div>
         <div>
-            <ul class="w-19/20 px-4 pt-4">
-                <li class="mb-2">
-                    <a href="#" class="flex items-center p-4 rounded-lg hover:bg-red-300/30 transition-colors" @click="LogOut">
+            <ul class="">
+                <li class="">
+                    <a href="#" class="flex items-center p-4 rounded-b-4xl hover:bg-warning/30 transition-colors" @click="LogOut">
                         <span :class="['mr-3']">
                             <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000000"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/></svg>
                             </span>
