@@ -1,10 +1,12 @@
 <template>
-    <div class="col-span-2 row-span-2 rounded-2xl bg-[#EBE8E2]">
-        <div :class="['mini-calendar p-4 box w-full rounded-lg h-full flex flex-col', 'box ']">
-            <div class="header flex justify-between items-center mb-3 bg-[#62d5ba] rounded-lg px-2">
-                <button @click="prevMonth" class="text-lg p-1  font-bold">&lt;</button>
-                <span class="font-bold text-base ">{{ monthName }} {{ year }}</span>
-                <button @click="nextMonth" class="text-lg p-1  font-bold">&gt;</button>
+    <div class="col-span-1 row-span-2 rounded-4xl bg-base-100 ">
+        <div :class="['mini-calendar p-4 box w-full rounded-lg h-full flex flex-col', 'box text-base-content']">
+            <div class="flex flex-row justify-between items-center border-b border-neutral/30 mb-4">
+                <span class="font-bold text-2xl pl-4 ">{{ monthName }} {{ year }}</span>
+                <div class="header flex items-center mb-3 rounded-lg px-2 ">
+                    <button @click="prevMonth" class="text-xl p-1  font-bold">&lt;</button>
+                    <button @click="nextMonth" class="text-xl p-1  font-bold">&gt;</button>
+                </div>
             </div>
             <div class="days grid grid-cols-7 text-center">
                 <div :class="['day text-md font-bold py-2']" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
@@ -17,12 +19,11 @@
                     'date py-2 text-md font-medium cursor-pointer flex justify-center text-center items-center',
                     {
                         'text-gray-500': !date.isCurrentMonth,
-                        'bg-[#62d5ba] rounded-full': date.isToday,
+                        'bg-primary text-primary-content rounded-full': date.isToday,
                         'bg-gray-200 rounded-full': isSelected(date) && !date.isToday
                     },
                     !date.isToday && !isSelected(date) && date.isCurrentMonth ? 'text-black' : ''
                     ]"
-                    @click="selectDate(date)"
                 >
                     {{ date.day }}
                 </div>

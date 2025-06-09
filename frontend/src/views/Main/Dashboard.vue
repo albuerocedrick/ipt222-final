@@ -1,11 +1,12 @@
 <template>
-    <div class="h-full grid grid-cols-4 grid-rows-4 gap-4 ">
+    <div class="h-full grid grid-cols-[25%_15%_15%_1fr]  grid-rows-[25%_15%_10%_1fr] gap-8 pb-4">
+        <mini-calendar />
         <total-completed-task />
         <total-pending-tasks />
-        <mini-calendar />
+        <missed-task />
         <upcoming-deadline/>
         <project-list />
-        <missed-task />
+        <recent-notif />
     </div>
 </template>
 
@@ -16,6 +17,8 @@ import MiniCalendar from './Dashboard/MiniCalendar.vue';
 import UpcomingDeadline from './Dashboard/UpcomingDeadline.vue';
 import ProjectList from './Dashboard/ProjectList.vue';
 import MissedTask from './Dashboard/MissedTask.vue';
+import Timer from './Dashboard/Timer.vue';
+import RecentNotif from './Dashboard/RecentNotif.vue'
 
 export default {
     components: {
@@ -24,7 +27,9 @@ export default {
         MiniCalendar,
         UpcomingDeadline,
         ProjectList,
-        MissedTask
+        MissedTask,
+        Timer,
+        RecentNotif
     }
 }
 </script>

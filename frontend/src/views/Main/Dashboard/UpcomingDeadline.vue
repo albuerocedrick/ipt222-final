@@ -1,6 +1,6 @@
 <template>
-    <div class="col-span-2 row-span-3 box bg-[#EBE8E2] w-full">
-        <div class="flex flex-row justify-between mb-4 bg-[#62d5ba] rounded-t-2xl h-20 items-center px-4"> 
+    <div class="col-span-2 row-span-3 box bg-base-100 w-full">
+        <div class="flex flex-row justify-between mb-4 border-b border-neutral/30 rounded-t-4xl h-20 items-center px-6"> 
             <p :class="['font-semibold text-2xl']">Upcoming Deadline</p>
         </div>
         <div class="flex flex-col items-center w-full">

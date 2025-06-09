@@ -1,6 +1,6 @@
 <template>
-    <div class="row-span-2 box bg-[#EBE8E2]">
-        <div class="flex flex-row justify-between mb-4 bg-[#62d5ba] rounded-t-2xl h-16 bg-[] items-center px-4"> 
+    <div class="row-span-2 box bg-base-100">
+        <div class="flex flex-row justify-between mb-4 rounded-t-2xl h-16 bg-[] items-center px-4 border-b border-neutral/30"> 
             <p :class="['font-semibold text-xl']">Projects</p>
         </div>
         <!-- <div class="flex flex-row items-center gap-4 rounded-2xl h-16 px-2 mb-2 mx-4 mt-4  shadow-sm border border-gray-400 bg-base-300">
