@@ -10,6 +10,7 @@ import Dashboard from '../views/Main/Dashboard.vue'
 import Tasks from '../views/Main/Tasks.vue'
 import Projects from '../views/Main/Projects.vue'
 import Calendar from '../views/Main/Calendar.vue'
+import Settings from '../views/Main/Settings.vue'
 
 const routes = [
     {
@@ -44,12 +45,19 @@ const routes = [
         {
           path: 'tasks',
           name: 'Tasks',
-          component: Tasks
+          component: Tasks,
         },
         {
           path: 'projects',
           name: 'Projects',
-          component: Projects
+          component: Projects,
+          
+        },
+        {
+          path: 'settings',
+          name: 'Settings',
+          component: Settings,
+          
         },
         // {
         //   path: 'calendar',

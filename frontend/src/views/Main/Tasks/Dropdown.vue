@@ -1,6 +1,6 @@
 <template>
-    <div class="relative w-48">
-        <select class="block w-full p-2 border-2 border-none rounded-4xl bg-base-100 text-gray-700 appearance-none focus:outline-none cursor-pointer px-4 font-medium" @change="ChangeDropdown">
+    <div class="relative w-48 ">
+        <select class="block w-full p-2 border-2 border-none rounded-4xl bg-base-100 text-gray-700 hover:bg-neutral/10 appearance-none focus:outline-none cursor-pointer px-4 font-medium" @change="ChangeDropdown">
             <option class="font-medium" value="By Deadline">By Deadline</option>
             <option class="font-medium" value="By Status">By Status</option>
         </select>
