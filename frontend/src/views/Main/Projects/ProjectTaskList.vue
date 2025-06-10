@@ -2,7 +2,14 @@
     <div class="h-full bg-base-100 flex flex-col overflow-hidden box pb-6">
         <!-- Fixed Header -->
         <div class="flex flex-row justify-between border-b border-neutral/30 rounded-t-2xl h-20 items-center px-6 flex-shrink-0"> 
-            <p class="font-bold text-2xl">Projects</p>
+            <div class="flex flex-row items-center text-center h-16 justify-between w-full">
+                <h1 class="font-bold text-2xl">Projects</h1>
+                <button class="p-2 btn btn-secondary rounded-2xl text-secondary-content hover-effect">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" fill="currentColor">
+                        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
 
     </div>
