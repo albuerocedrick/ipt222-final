@@ -155,7 +155,7 @@
 }
 
 .task-card-high {
-  border-left-color: oklch(70% 0.15 25);
+  border-left-color: oklch(70% 0.15 25);  
 }
 
 .task-card-medium {

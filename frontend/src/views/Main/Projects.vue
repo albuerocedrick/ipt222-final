@@ -1,12 +1,8 @@
 <template> 
-  <div class="h-full flex flex-col">
-    <div class="flex-shrink-0 flex flex-row gap-4">
-      <add-proj-modal />
-      <join-project-modal />
-    </div>
-    <div class="flex-1 flex flex-row gap-4 min-h-0">
-        <project-task-list class="w-2/5 h-full"/>
-        <project-task class="w-3/5 h-full"/>
+  <div class="h-full flex flex-col pb-4">
+    <div class="flex-1 flex flex-row gap-8 min-h-0">
+        <project-task-list class="w-1/3 h-full"/>
+        <project-task class="w-2/3 h-full"/>
     </div>
   </div>
 </template>

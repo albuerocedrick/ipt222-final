@@ -1,7 +1,9 @@
 <template>
 <div :class=" [ 'h-20 bg-base-100', 'box', 'flex', 'flex-row', 'items-center', 'justify-between']">
         <h1 v-if="$route.path === '/'" :class="['font-bold', 'lg:text-2xl md:text-xl text-sm', 'm-8', 'text-base-content']">  ActTrack</h1>
-        <div v-else></div>
+        <h1 v-else-if="$route.path === '/main'" :class="['font-bold', 'lg:text-2xl md:text-xl text-sm', 'm-8', 'text-base-content']">Dashboard</h1>
+        <h1 v-else-if="$route.path === '/main/tasks'" :class="['font-bold', 'lg:text-2xl md:text-xl text-sm', 'm-8', 'text-base-content']">  Tasks</h1>
+        <h1 v-else-if="$route.path === '/main/projects'" :class="['font-bold', 'lg:text-2xl md:text-xl text-sm', 'm-8', 'text-base-content']">  Tasks</h1>
         <ul v-if="$route.path === '/'" class="flex flex-row justify-evenly lg:w-1/7 w-3/8">
             <li
               v-for="(page, index) in pages"
