@@ -22,12 +22,41 @@
         <div v-else class="flex flex-row gap-2 items-center">
             <button class="btn btn-primary rounded-2xl hover-effect" onclick="my_modal_3.showModal()">Add Task</button>
             <dialog id="my_modal_3" class="modal">
-            <div class="modal-box">
+            <div class="modal-box box">
                 <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
-                <h3 class="text-lg font-bold">Hello!</h3>
-                <p class="py-4">Press ESC key or click on ✕ button to close</p>
+                <form class="flex flex-col items-center">
+                    <div class="flex flex-row gap-2 items-center mt-4 border-b border-neutral/30 h-20 w-full">
+                        <span class="text-neutral/60">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" fill="currentColor"><path d="m438-240 226-226-58-58-169 169-84-84-57 57 142 142ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg>
+                        </span>
+                        <input type="password" placeholder="Name of Task" class="input rounded-2xl border-0 focus:outline-0 h-10 font-medium bg-base-200 flex-1" />
+                    </div>
+                    <div class="flex flex-row pt-6 w-full gap-6">
+                        <div class="w-1/2">
+                            <p class="font-medium">Start Date</p>
+                            <input type="date" class="input rounded-2xl border-0 focus:!outline-0 h-10 font-medium bg-base-200" />
+                        </div>
+                        <div class="w-1/2">
+                            <p class="font-medium">End Date</p>
+                            <input type="date" class="input rounded-2xl border-0 focus:!outline-0 h-10 font-medium bg-base-200" />
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2 mt-6 w-full">
+                        <p class="font-medium">Project</p>
+                        <select class="block w-full box bg-base-200 p-2 border-2 border-none rounded-4xl text-gray-700 appearance-none focus:outline-none cursor-pointer px-4 font-medium ">
+                            <option class="font-medium" value="By Deadline">IPT222 - ActTrack</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-2 mt-6 w-full" >
+                        <label for="desc" class="font-medium">Description</label>
+                        <textarea  id="desc" type="text" rows="4" class="input border-0 bg-base-200 rounded-2xl focus:outline-0 w-full h-38 p-2 font-medium" />
+                    </div>
+                    <button type="submit" class="btn btn-secondary mt-8 w-full rounded-4xl">
+                        Add Task
+                    </button>
+                </form>
             </div>
             </dialog>  
             <span class="py-2 px-3 bg-base rounded-full  text-base-content hover:bg-neutral/30 transition-all duration-300 ">
