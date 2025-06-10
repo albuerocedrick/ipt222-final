@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full min-h-0 overflow-y-auto">     
+    <div class="h-full min-h-0 overflow-y-auto pb-4">     
        <dropdown />
        <task-by-deadline v-if="currentOption === 'By Deadline'"/>
        <task-by-status v-if="currentOption === 'By Status'"/>

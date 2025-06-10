@@ -5,7 +5,7 @@
                 <!-- head -->
                 <thead>
                 <tr class="h-20 text-base-content">
-                    <th class="w-1/2 text-2xl pl-6">Today</th>
+                    <th class="w-1/2 text-2xl pl-6 text-yellow-500">Near Deadline</th>
                     <th class="1/6">Deadline</th>
                     <th class="1/6">Status</th>
                     <th class="1/6">Project</th>
@@ -65,7 +65,7 @@
                 <!-- head -->
                 <thead>
                 <tr class="h-20 text-base-content">
-                    <th class="w-1/2 text-2xl pl-6">Tomorrow</th>
+                    <th class="w-1/2 text-2xl pl-6 text-blue-500">In Progress</th>
                     <th class="1/6">Deadline</th>
                     <th class="1/6">Status</th>
                     <th class="1/6">Project</th>
@@ -125,7 +125,7 @@
                 <!-- head -->
                 <thead>
                 <tr class="h-20 text-base-content">
-                    <th class="w-1/2 text-2xl pl-6">Others</th>
+                    <th class="w-1/2 text-2xl pl-6 text-gray-500">Not Started</th>
                     <th class="1/6">Deadline</th>
                     <th class="1/6">Status</th>
                     <th class="1/6">Project</th>
@@ -185,7 +185,7 @@
                 <!-- head -->
                 <thead>
                 <tr class="h-20 text-base-content">
-                    <th class="w-1/2 text-2xl pl-6">Today</th>
+                    <th class="w-1/2 text-2xl pl-6 text-success">Done</th>
                     <th class="1/6">Deadline</th>
                     <th class="1/6">Status</th>
                     <th class="1/6">Project</th>
@@ -245,7 +245,7 @@
                 <!-- head -->
                 <thead>
                 <tr class="h-20 text-base-content">
-                    <th class="w-1/2 text-2xl pl-6">Tomorrow</th>
+                    <th class="w-1/2 text-2xl pl-6 text-warning">Submitted Late</th>
                     <th class="1/6">Deadline</th>
                     <th class="1/6">Status</th>
                     <th class="1/6">Project</th>
@@ -305,7 +305,7 @@
                 <!-- head -->
                 <thead>
                 <tr class="h-20 text-base-content">
-                    <th class="w-1/2 text-2xl pl-6">Others</th>
+                    <th class="w-1/2 text-2xl pl-6 text-error">Missed</th>
                     <th class="1/6">Deadline</th>
                     <th class="1/6">Status</th>
                     <th class="1/6">Project</th>
