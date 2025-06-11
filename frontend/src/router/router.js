@@ -78,16 +78,16 @@ const router = createRouter({
   routes,
 })
 
-// router.beforeEach((to, from, next) => {
-//   const user = JSON.parse(localStorage.getItem('user'));
+router.beforeEach((to, from, next) => {
+  const user = JSON.parse(localStorage.getItem('user'));
 
-//   if (to.meta.requiresAuth && !user) {
-//     next('/');
-//   } else if (to.meta.guestOnly && user) {
-//     next('/main');
-//   } else {
-//     next();
-//   }
-// });
+  if (to.meta.requiresAuth && !user) {
+    next('/');
+  } else if (to.meta.guestOnly && user) {
+    next('/main');
+  } else {
+    next();
+  }
+});
 
 export default router

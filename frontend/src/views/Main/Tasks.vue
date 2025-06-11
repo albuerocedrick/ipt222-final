@@ -1,22 +1,16 @@
 <template>
-    <div class="h-full min-h-0 overflow-y-auto pb-4">     
-       <dropdown />
-       <task-by-deadline v-if="currentOption === 'By Deadline'"/>
-       <task-by-status v-if="currentOption === 'By Status'"/>
+    <div class="h-full min-h-0 overflow-y-auto pb-6">  
+        <all-tasks />
     </div>
 </template>
 
 <script>
-import Dropdown from './Tasks/Dropdown.vue';
-import TaskTable from './Tasks/TaskTable.vue';
-import TaskByDeadline from './Tasks/TaskByDeadline.vue'
+import AllTasks from './Tasks/AllTasks.vue'
 import TaskByStatus from './Tasks/TaskByStatus.vue'
 
 export default {
     components: {
-        Dropdown,
-        TaskTable,
-        TaskByDeadline,
+        AllTasks,
         TaskByStatus
     },
     data() {
@@ -25,15 +19,9 @@ export default {
         }
     },
     methods: {
-        DropdownClick(option) {
-            this.currentOption = option;
+        ChangeDropdown(event) {
+            this.currentOption = event.target.value;
         }
-    },
-    mounted() {
-        this.$bus.$on("ClickDropdown", this.DropdownClick)
-    },
-    beforeUnmount() {
-        this.$bus.$off("ClickDropdown", this.DropdownClick)
     }
 }
 </script>

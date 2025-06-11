@@ -31,6 +31,10 @@ switch($method) {
     case 'GET':
         break;
     case 'PUT':
+        if ($action == 'update-profile') {
+            $result = $user->updateProfile($data);
+            echo json_encode($result);
+        }
         break;
     case 'DELETE':
         break;
