@@ -1,8 +1,8 @@
 <?php 
 
 class Database {
-    private $host = "localhost:3307";
-    private $db_name = "assignment_tracker";
+    private $host = "localhost";
+    private $db_name = "act_track";
     private $username = "root";
     private $password = "";
 
