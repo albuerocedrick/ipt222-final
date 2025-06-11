@@ -8,11 +8,10 @@ class User {
         $this->conn = $db;
     }
 
-    public function Exists($email, $username) {
-        $query = "SELECT COUNT(*) as count FROM users WHERE email = :email OR username = :username";
+    public function Exists($email) {
+        $query = "SELECT COUNT(*) as count FROM users WHERE email = :email";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":email", $email);
-        $stmt->bindParam(":username", $username);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row['count'] > 0;
@@ -20,15 +19,15 @@ class User {
 
 
     public function Signup($data) {
-        if($this->Exists($data['email'],$data['username'])) {
+        if($this->Exists($data['email'])) {
             return ["success" => false, 
-                    "message" => "Email or username already exists"];
+                    "message" => "Email already exists"];
         }
 
-        $query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        $query = "INSERT INTO users (f_name, l_name, email, password) VALUES ( ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        $stmt->execute([$data['username'], $data['email'], $data['password']]);
+        $stmt->execute([$data['fname'], $data['lname'], $data['email'], $data['password']]);
 
         return ["success" => true, 
                 "message" => "Successful Signup"];
