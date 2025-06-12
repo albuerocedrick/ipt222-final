@@ -107,14 +107,14 @@
                         </div>
 
                         <!-- Project Actions -->
-                        <div class="dropdown dropdown-end">
+                        <!-- <div class="dropdown dropdown-end">
                             <div tabindex="0" role="button" class="btn btn-ghost btn-sm opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-xl hover:bg-primary/10"
                                  @click.stop>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                                 </svg>
                             </div>
-                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-2xl bg-base-100 rounded-2xl w-48 border border-primary/20">
+                            <ul tabindex="0" class="dropdown-content z-[1000] menu p-2 shadow-2xl bg-base-100 rounded-2xl w-48 border border-primary/20">
                                 <li v-if="project.is_owner">
                                     <a @click.stop="editProject(project)" class="rounded-xl hover:bg-primary/10 transition-all duration-200">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -140,7 +140,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
