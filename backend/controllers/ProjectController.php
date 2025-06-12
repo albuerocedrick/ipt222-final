@@ -21,11 +21,15 @@ switch($method) {
         if($action == 'add') {
             $result = $project->AddProject($data['id'], $data['name'], $data['description']);
             echo json_encode($result);
+        } else if($action == 'create-project') {
+            echo json_encode($project->CreateProject($data['owner_id'], $data['project_name'], $data['description']));
         }
         break;
     case 'GET':
         if($action == 'fetch-user-projects') {
             echo json_encode($project->FetchProject($_GET['user_id']));
+        } elseif ($action == 'fetch-project-members') {
+            echo json_encode($project->FetchProjectMembers($_GET['project_id']));
         }
         break;
     case 'PUT':

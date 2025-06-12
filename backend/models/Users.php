@@ -52,69 +52,123 @@ class User {
 
     // for updating user profile
     public function updateProfile($data) {
-    // Validate required fields
-    if (empty($data['user_id'])) {
-        return ["success" => false, "message" => "User ID is required"];
-    }
+        // Validate required fields
+        if (empty($data['user_id'])) {
+            return ["success" => false, "message" => "User ID is required"];
+        }
 
-    // Check if email is being updated and if it already exists
-    if (isset($data['email'])) {
-        $query = "SELECT user_id FROM users WHERE email = :email AND user_id != :userId";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":email", $data['email']);
-        $stmt->bindParam(":userId", $data['user_id']);
-        $stmt->execute();
+        // Check if email is being updated and if it already exists
+        if (isset($data['email'])) {
+            $query = "SELECT user_id FROM users WHERE email = :email AND user_id != :userId";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":email", $data['email']);
+            $stmt->bindParam(":userId", $data['user_id']);
+            $stmt->execute();
+            
+            if ($stmt->rowCount() > 0) {
+                return ["success" => false, "message" => "Email already in use by another account"];
+            }
+        }
+
+        // Build the update query dynamically based on provided data
+        $updates = [];
+        $params = [":userId" => $data['user_id']];
         
-        if ($stmt->rowCount() > 0) {
-            return ["success" => false, "message" => "Email already in use by another account"];
+        if (isset($data['f_name'])) {
+            $updates[] = "f_name = :f_name";
+            $params[":f_name"] = $data['f_name'];
+        }
+        
+        if (isset($data['l_name'])) {
+            $updates[] = "l_name = :l_name";
+            $params[":l_name"] = $data['l_name'];
+        }
+        
+        if (isset($data['email'])) {
+            $updates[] = "email = :email";
+            $params[":email"] = $data['email'];
+        }
+        
+        if (isset($data['profile_pic'])) {
+            $updates[] = "profile_pic = :profile_pic";
+            $params[":profile_pic"] = $data['profile_pic'];
+        }
+        
+        if (isset($data['is_admin'])) {
+            $updates[] = "is_admin = :is_admin";
+            $params[":is_admin"] = $data['is_admin'];
+        }
+
+        // If no fields to update
+        if (empty($updates)) {
+            return ["success" => false, "message" => "No data provided for update"];
+        }
+
+        // Prepare and execute the update query
+        try {
+            $query = "UPDATE users SET " . implode(", ", $updates) . " WHERE user_id = :userId";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute($params);
+            
+            return ["success" => true, "message" => "Profile updated successfully"];
+        } catch (PDOException $e) {
+            return ["success" => false, "message" => "Database error: " . $e->getMessage()];
         }
     }
 
-    // Build the update query dynamically based on provided data
-    $updates = [];
-    $params = [":userId" => $data['user_id']];
-    
-    if (isset($data['f_name'])) {
-        $updates[] = "f_name = :f_name";
-        $params[":f_name"] = $data['f_name'];
-    }
-    
-    if (isset($data['l_name'])) {
-        $updates[] = "l_name = :l_name";
-        $params[":l_name"] = $data['l_name'];
-    }
-    
-    if (isset($data['email'])) {
-        $updates[] = "email = :email";
-        $params[":email"] = $data['email'];
-    }
-    
-    if (isset($data['profile_pic'])) {
-        $updates[] = "profile_pic = :profile_pic";
-        $params[":profile_pic"] = $data['profile_pic'];
-    }
-    
-    if (isset($data['is_admin'])) {
-        $updates[] = "is_admin = :is_admin";
-        $params[":is_admin"] = $data['is_admin'];
+    public function AddMember($project_id, $email, $permission_level, $added_by) {
+        try {
+            // 1. Check if the user exists
+            $userStmt = $this->conn->prepare("SELECT user_id FROM users WHERE email = ?");
+            $userStmt->execute([$email]);
+            $user = $userStmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$user) {
+                return [
+                    "success" => false,
+                    "message" => "User with this email does not exist."
+                ];
+            }
+
+            $user_id = $user['user_id'];
+
+            // 2. Check if the user is already a collaborator
+            $checkStmt = $this->conn->prepare("SELECT * FROM collaborators WHERE project_id = ? AND user_id = ?");
+            $checkStmt->execute([$project_id, $user_id]);
+
+            if ($checkStmt->rowCount() > 0) {
+                return [
+                    "success" => false,
+                    "message" => "User is already a member of this project."
+                ];
+            }
+
+            // 3. Insert into collaborators table (without status)
+            $insertStmt = $this->conn->prepare("
+                INSERT INTO collaborators (project_id, user_id, permission_level, added_by) 
+                VALUES (?, ?, ?, ?)
+            ");
+            $insertStmt->execute([$project_id, $user_id, $permission_level, $added_by]);
+
+            return [
+                "success" => true,
+                "message" => "Member added successfully!"
+            ];
+
+        } catch (PDOException $e) {
+            return [
+                "success" => false,
+                "message" => "Database error: " . $e->getMessage()
+            ];
+        } catch (Exception $e) {
+            return [
+                "success" => false,
+                "message" => "Unexpected error: " . $e->getMessage()
+            ];
+        }
     }
 
-    // If no fields to update
-    if (empty($updates)) {
-        return ["success" => false, "message" => "No data provided for update"];
-    }
 
-    // Prepare and execute the update query
-    try {
-        $query = "UPDATE users SET " . implode(", ", $updates) . " WHERE user_id = :userId";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute($params);
-        
-        return ["success" => true, "message" => "Profile updated successfully"];
-    } catch (PDOException $e) {
-        return ["success" => false, "message" => "Database error: " . $e->getMessage()];
-    }
-}
 }
 
 ?>

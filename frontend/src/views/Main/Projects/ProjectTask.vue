@@ -32,7 +32,7 @@
             </div>
             
             <!-- Empty State -->
-            <div v-else class="text-center py-8">
+            <div v-else class="text-center py-8 h-full">
                 <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-3xl flex items-center justify-center">
                     <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -277,20 +277,20 @@
                 </div>
                 
                 <form @submit.prevent="addMember" class="space-y-4">
-                    <div class="form-control">
+                    <div class="form-control flex flex-col">
                         <label class="label">
                             <span class="label-text font-semibold text-base-content/80">Email Address</span>
                         </label>
                         <input v-model="newMember.email" type="email" placeholder="Enter member's email" 
-                            class="input input-bordered rounded-xl border-primary/20 focus:border-secondary focus:ring-2 focus:ring-secondary/20 bg-base-200/50" required>
+                            class="w-full input input-bordered rounded-xl border-primary/20 focus:border-secondary focus:ring-2 focus:ring-secondary/20 bg-base-200/50" required>
                     </div>
                     
-                    <div class="form-control">
+                    <div class="form-control flex flex-col">
                         <label class="label">
                             <span class="label-text font-semibold text-base-content/80">Permission Level</span>
                         </label>
                         <select v-model="newMember.permission_level" 
-                                class="select select-bordered rounded-xl border-primary/20 focus:border-secondary focus:ring-2 focus:ring-secondary/20 bg-base-200/50">
+                                class="w-full select select-bordered rounded-xl border-primary/20 focus:border-secondary focus:ring-2 focus:ring-secondary/20 bg-base-200/50">
                             <option value="member">Member</option>
                             <option value="admin">Admin</option>
                         </select>
@@ -852,7 +852,8 @@ export default {
                 const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/add-member', {
                     project_id: this.selectedProject.project_id,
                     email: this.newMember.email,
-                    permission_level: this.newMember.permission_level
+                    permission_level: this.newMember.permission_level,
+                    added_by: this.currentUser()
                 });
 
                 if (res.data.success) {
@@ -865,6 +866,10 @@ export default {
             } catch (error) {
                 this.handleError('Error adding member');
             }
+        },
+        currentUser() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            return user.id;
         },
 
         // Edit Project Modal Methods

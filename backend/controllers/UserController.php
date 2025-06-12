@@ -26,6 +26,8 @@ switch($method) {
         elseif($action == 'login') {
             $result = $user->Login($data['email'], $data['password']);
             echo json_encode($result);
+        } elseif($action == 'add-member') {
+            echo json_encode($user->AddMember($data['project_id'], $data['email'], $data['permission_level'], $data['added_by']));
         }
         break;
     case 'GET':

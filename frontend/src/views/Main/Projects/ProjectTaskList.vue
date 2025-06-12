@@ -164,13 +164,13 @@
                             <span class="label-text font-semibold text-base-content/80">Project Name</span>
                         </label>
                         <input v-model="newProject.name" type="text" placeholder="Enter project name" 
-                               class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" required>
+                               class="input w-full input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" required>
                     </div>
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-semibold text-base-content/80">Description</span>
                         </label>
-                        <textarea v-model="newProject.description" class="textarea textarea-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" 
+                        <textarea v-model="newProject.description" class="w-full textarea textarea-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" 
                                   placeholder="Project description (optional)" rows="3"></textarea>
                     </div>
                     <div class="modal-action gap-3 pt-4">
@@ -328,13 +328,21 @@ export default {
         },
 
         formatDate(dateString) {
-            const date = new Date(dateString);
+            if (!dateString) return 'Invalid Date'; // or return an empty string
+
+            const fixedDate = dateString.replace(' ', 'T');
+            const date = new Date(fixedDate);
+
+            if (isNaN(date)) return 'Invalid Date';
+
             return date.toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric'
             });
         },
+
+
 
         getUserIDFromLocal() {
             const user = JSON.parse(localStorage.getItem('user'));
