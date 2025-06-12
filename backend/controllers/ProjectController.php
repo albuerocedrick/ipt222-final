@@ -33,8 +33,16 @@ switch($method) {
         }
         break;
     case 'PUT':
+        if($action == 'update-project'){
+            echo json_encode($project->UpdateProject($data['project_id'], $data['project_name'], $data['description']));
+        }
         break;
     case 'DELETE':
+        if($action == 'remove-member'){
+            echo json_encode($project->RemoveMember($data['project_id'], $data['user_id']));
+        } elseif($action == 'delete-project') {
+            echo json_encode($project->DeleteProject($data['project_id']));
+        }
         break;
 }
 ?>

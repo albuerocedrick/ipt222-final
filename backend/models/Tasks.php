@@ -37,5 +37,76 @@ class Task {
         ];
 
     }
+
+    public function CreateTask($project_id, $title, $description, $start_date, $due_date) {
+        try {
+            $stmt = $this->conn->prepare("INSERT INTO tasks (project_id, title, description, start_date, due_date) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$project_id, $title, $description, $start_date, $due_date]);
+
+            return [
+                "success" => true,
+                "message" => "Task created successfully!"
+            ];
+        } catch (PDOException $e) {
+            return [
+                "success" => false,
+                "message" => "Database error: " . $e->getMessage()
+            ];
+        }
+    }
+
+    public function UpdateTask($task_id, $title, $description, $start_date, $due_date, $status) {
+        try {
+            $stmt = $this->conn->prepare("
+                UPDATE tasks 
+                SET title = ?, description = ?, start_date = ?, due_date = ?, status = ? 
+                WHERE task_id = ?
+            ");
+            $stmt->execute([$title, $description, $start_date, $due_date, $status, $task_id]);
+
+            if ($stmt->rowCount() > 0) {
+                return [
+                    "success" => true,
+                    "message" => "Task updated successfully!"
+                ];
+            } else {
+                return [
+                    "success" => false,
+                    "message" => "No changes made or task not found."
+                ];
+            }
+        } catch (PDOException $e) {
+            return [
+                "success" => false,
+                "message" => "Database error: " . $e->getMessage()
+            ];
+        }
+    }
+
+    public function DeleteTask($task_id) {
+        try {
+            $stmt = $this->conn->prepare("DELETE FROM tasks WHERE task_id = ?");
+            $stmt->execute([$task_id]);
+
+            if ($stmt->rowCount() > 0) {
+                return [
+                    "success" => true,
+                    "message" => "Task deleted successfully!"
+                ];
+            } else {
+                return [
+                    "success" => false,
+                    "message" => "Task not found or already deleted."
+                ];
+            }
+        } catch (PDOException $e) {
+            return [
+                "success" => false,
+                "message" => "Database error: " . $e->getMessage()
+            ];
+        }
+    }
+
+
 }
 ?>

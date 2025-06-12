@@ -18,6 +18,9 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 switch($method) {
     case 'POST':
+        if($action == 'create-task-in-projects'){
+            echo json_encode($task->CreateTask($data['project_id'],$data['title'], $data['description'], $data['start_date'], $data['due_date']));
+        }
         break;
     case 'GET':
         if($action == 'fetchalltask') {
@@ -27,8 +30,14 @@ switch($method) {
         }
         break;
     case 'PUT':
+        if($action == 'update-task-in-projects'){
+            echo json_encode($task->UpdateTask($data['task_id'],$data['title'], $data['description'], $data['start_date'], $data['due_date'], $data['status']));
+        }
         break;
     case 'DELETE':
+        if($action == 'delete-task') {
+            echo json_encode($task->DeleteTask($data['task_id']));
+        }
         break;
 }
 ?>

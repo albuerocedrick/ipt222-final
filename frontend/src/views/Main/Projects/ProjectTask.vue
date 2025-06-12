@@ -215,12 +215,12 @@
                 </div>
                 
                 <form @submit.prevent="createTask" class="space-y-4">
-                    <div class="form-control">
+                    <div class="form-control flex flex-col">
                         <label class="label">
                             <span class="label-text font-semibold text-base-content/80">Task Title</span>
                         </label>
                         <input v-model="newTask.title" type="text" placeholder="Enter task title" 
-                               class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" required>
+                               class="w-full input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" required>
                     </div>
                     
                     <div class="form-control">
@@ -342,24 +342,6 @@
                                 placeholder="Project description" rows="3"></textarea>
                     </div>
                     
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold text-base-content/80">Start Date</span>
-                            </label>
-                            <input v-model="editingProject.start_date" type="date" 
-                                class="input input-bordered rounded-xl border-primary/20 focus:border-warning focus:ring-2 focus:ring-warning/20 bg-base-200/50">
-                        </div>
-                        
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold text-base-content/80">End Date</span>
-                            </label>
-                            <input v-model="editingProject.end_date" type="date" 
-                                class="input input-bordered rounded-xl border-primary/20 focus:border-warning focus:ring-2 focus:ring-warning/20 bg-base-200/50">
-                        </div>
-                    </div>
-                    
                     <div class="modal-action gap-3 pt-4">
                         <button type="button" class="btn btn-ghost rounded-xl hover:bg-base-200/50 transition-all duration-200" @click="closeEditProjectModal">Cancel</button>
                         <button type="submit" class="btn btn-warning rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300" :disabled="!editingProject.project_name.trim()">
@@ -406,7 +388,7 @@
                             </span>
                         </label>
                         <input v-model="deleteConfirmation" type="text" placeholder="Type DELETE" 
-                            class="input input-bordered rounded-xl border-error/20 focus:border-error focus:ring-2 focus:ring-error/20 bg-base-200/50">
+                            class="input input-bordered rounded-xl border-error/20 focus:border-error focus:ring-2 focus:ring-error/20 bg-base-200/50 w-full">
                     </div>
                 </div>
                 
@@ -442,19 +424,19 @@
                 </div>
                 
                 <form @submit.prevent="newTask.task_id ? updateTask() : createTask()" class="space-y-4">
-                    <div class="form-control">
+                    <div class="form-control flex flex-col">
                         <label class="label">
                             <span class="label-text font-semibold text-base-content/80">Task Title</span>
                         </label>
                         <input v-model="newTask.title" type="text" placeholder="Enter task title" 
-                            class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" required>
+                            class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50 w-full" required>
                     </div>
                     
-                    <div class="form-control">
+                    <div class="form-control flex flex-col">
                         <label class="label">
                             <span class="label-text font-semibold text-base-content/80">Description</span>
                         </label>
-                        <textarea v-model="newTask.description" class="textarea textarea-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" 
+                        <textarea v-model="newTask.description" class="w-full textarea textarea-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" 
                                 placeholder="Task description" rows="3"></textarea>
                     </div>
                     
@@ -536,8 +518,6 @@ export default {
                 project_id: null,
                 project_name: '',
                 description: '',
-                start_date: '',
-                end_date: ''
             },
             deleteConfirmation: ''
         }
@@ -690,7 +670,7 @@ export default {
         
         async createTask() {
             try {
-                const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/create-task', {
+                const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/create-task-in-projects', {
                     project_id: this.selectedProject.project_id,
                     title: this.newTask.title,
                     description: this.newTask.description,
@@ -878,8 +858,7 @@ export default {
                 project_id: this.selectedProject.project_id,
                 project_name: this.selectedProject.project_name,
                 description: this.selectedProject.description || '',
-                start_date: this.selectedProject.start_date || '',
-                end_date: this.selectedProject.end_date || ''
+
             };
             this.$refs.editProjectModal.showModal();
         },
@@ -894,8 +873,6 @@ export default {
                     project_id: this.editingProject.project_id,
                     project_name: this.editingProject.project_name,
                     description: this.editingProject.description,
-                    start_date: this.editingProject.start_date || null,
-                    end_date: this.editingProject.end_date || null
                 });
 
                 if (res.data.success) {
@@ -906,8 +883,6 @@ export default {
                         ...this.selectedProject,
                         project_name: this.editingProject.project_name,
                         description: this.editingProject.description,
-                        start_date: this.editingProject.start_date,
-                        end_date: this.editingProject.end_date
                     };
                     // Emit event to refresh project list
                     this.$bus.$emit("ProjectUpdated", this.selectedProject);
@@ -981,7 +956,7 @@ export default {
 
         async createTask() {
             try {
-                const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/create-task', {
+                const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/create-task-in-projects', {
                     project_id: this.selectedProject.project_id,
                     title: this.newTask.title,
                     description: this.newTask.description,
@@ -1003,7 +978,7 @@ export default {
 
         async updateTask() {
             try {
-                const res = await axios.put('http://localhost/IPT_FINAL_PROJ/backend/index.php/update-task', {
+                const res = await axios.put('http://localhost/IPT_FINAL_PROJ/backend/index.php/update-task-in-projects', {
                     task_id: this.newTask.task_id,
                     title: this.newTask.title,
                     description: this.newTask.description,
