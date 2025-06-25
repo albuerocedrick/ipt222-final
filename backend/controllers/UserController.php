@@ -8,6 +8,14 @@ header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+    http_response_code(200);
+    exit;
+}
+
 $db = (new Database())->connect();
 $user = new User($db);
 
@@ -22,14 +30,25 @@ switch($method) {
         if ($action == 'signup') {
             $result = $user->Signup($data);
             echo json_encode($result);
-        } 
-        elseif($action == 'login') {
+            http_response_code($result['success'] ? 200 : 400);
+            exit;
+        } elseif($action == 'verify-password'){
+            $result = $user->verifyPassword($data);
+            echo json_encode($result);
+            http_response_code($result['success'] ? 200 : 400);
+            exit;
+        } elseif($action == 'update-password') {
+            $result = $user->updatePassword($data);
+            echo json_encode($result);
+            http_response_code($result['success'] ? 200 : 400);
+            exit;
+        }
+        elseif ($action == 'login') {
             $result = $user->Login($data['email'], $data['password']);
             echo json_encode($result);
-        } elseif($action == 'add-member') {
-            echo json_encode($user->AddMember($data['project_id'], $data['email'], $data['permission_level'], $data['added_by']));
+            http_response_code($result['success'] ? 200 : 401);
+            exit;
         }
-        break;
     case 'GET':
         break;
     case 'PUT':

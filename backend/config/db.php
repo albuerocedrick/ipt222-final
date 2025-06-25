@@ -2,9 +2,9 @@
 
 class Database {
     private $host = "localhost";
-    private $db_name = "act_track";
-    private $username = "root";
-    private $password = "";
+    private $db_name = "aqxqbdif_act-track";
+    private $username = "aqxqbdif_act-track";
+    private $password = "gG4jnQJ8qdVfvXmB5ZZX";
 
     public $conn;
 

@@ -2,6 +2,14 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../models/Projects.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+    http_response_code(200);
+    exit;
+}
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE");
@@ -18,31 +26,65 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 switch($method) {
     case 'POST':
-        if($action == 'add') {
+        if ($action == 'add') {
             $result = $project->AddProject($data['id'], $data['name'], $data['description']);
+            http_response_code($result['success'] ? 200 : 400);
             echo json_encode($result);
-        } else if($action == 'create-project') {
-            echo json_encode($project->CreateProject($data['owner_id'], $data['project_name'], $data['description']));
+            exit;
+        } else if ($action == 'create-project') {
+            $result = $project->CreateProject($data['owner_id'], $data['project_name'], $data['description']);
+            http_response_code($result['success'] ? 200 : 400);
+            echo json_encode($result);
+            exit;
+        } elseif ($action == 'add-member') {
+            $result = $project->AddMember($data['project_id'], $data['email']);
+            http_response_code($result['success'] ? 200 : 400);
+            echo json_encode($result);
+            exit;
         }
         break;
+
     case 'GET':
-        if($action == 'fetch-user-projects') {
-            echo json_encode($project->FetchProject($_GET['user_id']));
+        if ($action == 'fetch-user-projects') {
+            $result = $project->fetchUserProjects($_GET['user_id']);
+            echo json_encode($result);
+            http_response_code(200);
+            exit;
         } elseif ($action == 'fetch-project-members') {
-            echo json_encode($project->FetchProjectMembers($_GET['project_id']));
+            $result = $project->fetchProjectMembers($_GET['project_id']);
+            echo json_encode($result);
+            http_response_code(200);
+            exit;
+        } elseif ($action == 'fetch-tasks-for-projects') {
+            $result = $project->fetchTasksForProjects($_GET['project_ids']);
+            echo json_encode($result);
+            http_response_code(200);
+            exit;
         }
         break;
+
     case 'PUT':
-        if($action == 'update-project'){
-            echo json_encode($project->UpdateProject($data['project_id'], $data['project_name'], $data['description']));
+        if ($action == 'update-project') {
+            $result = $project->UpdateProject($data['project_id'], $data['project_name'], $data['description']);
+            http_response_code($result['success'] ? 200 : 400);
+            echo json_encode($result);
+            exit;
         }
         break;
+
     case 'DELETE':
-        if($action == 'remove-member'){
-            echo json_encode($project->RemoveMember($data['project_id'], $data['user_id']));
-        } elseif($action == 'delete-project') {
-            echo json_encode($project->DeleteProject($data['project_id']));
+        if ($action == 'remove-member') {
+            $result = $project->RemoveMember($data['project_id'], $data['user_id']);
+            http_response_code($result['success'] ? 200 : 400);
+            echo json_encode($result);
+            exit;
+        } elseif ($action == 'delete-project') {
+            $result = $project->DeleteProject($data['project_id']);
+            http_response_code($result['success'] ? 200 : 400);
+            echo json_encode($result);
+            exit;
         }
         break;
 }
+
 ?>

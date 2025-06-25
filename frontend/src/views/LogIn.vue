@@ -159,7 +159,7 @@ export default {
             this.form.password = '';
         },
         async Login() {
-            const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/login', this.form);
+            const res = await axios.post('https://act-track.x10.mx/index.php/login', this.form);
 
             try {
                 if(res.data.success) {

@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <!-- Search Section -->
+        <!-- Search Section
         <div v-if="showSearch" class="flex-1 max-w-md mx-8">
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -31,10 +31,10 @@
                     class="input rounded-2xl pl-12 pr-4 h-12 font-medium bg-base-200/70 backdrop-blur-sm w-full border-0 focus:outline-0 focus:ring-2 focus:ring-primary/30 focus:bg-base-200 transition-all duration-300" 
                 />
             </div>
-        </div>
+        </div> -->
 
         <!-- Auth Section (Landing Page) -->
-        <div v-if="$route.path === '/'" class="flex items-center gap-4 mr-8">
+        <div v-if="$route.path === '/' || $route.path === '/aboutus'" class="flex items-center gap-4 mr-8">
             <router-link
                 v-for="(page, index) in pages"
                 :key="index"
@@ -52,14 +52,14 @@
         <!-- User Section (Main App) -->
         <div v-else class="flex items-center gap-3 mr-8">
             <!-- Add Task Button -->
-            <button 
+            <!-- <button 
                 class="btn btn-primary rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold" 
                 onclick="my_modal_3.showModal()">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
                 Add Task
-            </button>
+            </button> -->
 
             <!-- Enhanced Modal -->
             <dialog id="my_modal_3" class="modal backdrop-blur-sm">
@@ -148,21 +148,25 @@
                 </div>
             </dialog>
 
-            <!-- Notifications -->
+            <!-- Notifications
             <div class="tooltip tooltip-bottom" data-tip="Notifications">
-                <button class="btn btn-ghost btn-circle hover:bg-primary/10 hover:text-primary transition-all duration-300 relative">
+                <button class="btn btn-ghost btn-circle hover:bg-primary/10 hover:text-primary transition-all duration-300 relative" @click="$router.push('/main/notifications')">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 -960 960 960">
                         <path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/>
                     </svg>
-                    <!-- Notification Badge -->
-                    <div class="absolute -top-1 -right-1 w-3 h-3 bg-error rounded-full"></div>
+                    Notification Badge -->
+                    <!-- <div class="absolute -top-1 -right-1 w-3 h-3 bg-error rounded-full"></div>
                 </button>
             </div>
-
+             -->
             <!-- User Dropdown -->
             <div class="dropdown dropdown-end">
                 <div tabindex="0" role="button" class="flex items-center gap-3 p-2 rounded-xl hover:bg-base-200 transition-all duration-300 cursor-pointer">
-                    <avatar class="rounded-full ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-300"/>
+                    <div class="avatar avatar-placeholder">
+                    <div class="bg-neutral text-neutral-content w-14 rounded-full">
+                        <span class="text-3xl"></span>
+                    </div>
+                    </div>
                     <svg class="w-4 h-4 text-base-content/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
@@ -171,7 +175,11 @@
                     <!-- User Info Header -->
                     <div class="p-4 border-b border-base-300 bg-gradient-to-r from-primary/5 to-secondary/5">
                         <div class="flex items-center gap-3">
-                            <avatar class="rounded-full ring-2 ring-primary/30"/>
+                            <div class="avatar avatar-placeholder">
+                            <div class="bg-neutral text-neutral-content w-14 rounded-full">
+                                <span class="text-3xl"></span>
+                            </div>
+                            </div>
                             <div>
                                 <p class="font-semibold text-base-content">{{ userInfo.name }}</p>
                                 <p class="text-sm text-base-content/60">ID: {{ userInfo.userID }}</p>
@@ -216,6 +224,10 @@ export default {
     data() {
         return {
             pages: [
+                {
+                    label: 'About Us',
+                    url: '/aboutus'
+                },
                 {
                     label: 'Log In',
                     url: '/login'

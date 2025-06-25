@@ -7,7 +7,7 @@
         <div class="flex-1 bg-base-100 rounded-3xl shadow-2xl border border-primary/10 h-full overflow-hidden">
             <!-- Dynamic Content Based on Selected Menu -->
             <profile-settings v-if="selectedMenu === 'profile'" />
-            <!-- <password-settings v-if="selectedMenu === 'password'" /> -->
+            <password-settings v-if="selectedMenu === 'password'" />
             <!-- <theme-settings v-if="selectedMenu === 'theme'" /> -->
         </div>
     </div>
@@ -16,7 +16,7 @@
 <script>
 import SettingMenu from './SettingsPage/SettingMenu.vue';
 import ProfileSettings from './SettingsPage/ProfileSettings.vue';
-// import PasswordSettings from './SettingsPage/PasswordSettings.vue';
+import PasswordSettings from './SettingsPage/PasswordSettings.vue';
 // import ThemeSettings from './SettingsPage/ThemeSettings.vue';
 
 export default {
@@ -24,7 +24,7 @@ export default {
     components: {
         SettingMenu,
         ProfileSettings,
-        // PasswordSettings,
+        PasswordSettings,
         // ThemeSettings
     },
     data() {

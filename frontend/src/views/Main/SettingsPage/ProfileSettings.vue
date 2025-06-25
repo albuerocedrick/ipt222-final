@@ -41,15 +41,15 @@
                         
                         <!-- Upload Controls -->
                         <div class="flex-1">
-                            <p class="font-semibold text-lg mb-2">Change Profile Picture</p>
-                            <p class="text-base-content/60 text-sm mb-4">Upload a new avatar from your device</p>
+                            <p class="font-semibold text-lg mb-2">{{userProfile.f_name}} {{ userProfile.l_name }}</p>
+                            <p class="text-base-content/60 text-sm mb-4"></p>
                             <div class="flex gap-3">
-                                <button @click="triggerFileUpload" class="btn btn-primary btn-sm">
+                                <!-- <button @click="triggerFileUpload" class="btn btn-primary btn-sm">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                     </svg>
                                     Upload New
-                                </button>
+                                </button> -->
                                 <button v-if="userProfile.avatar" @click="removeAvatar" class="btn btn-ghost btn-sm text-error">
                                     Remove
                                 </button>
@@ -239,7 +239,7 @@ export default {
             this.isUpdating = true;
             try {
                 // Call the actual API endpoint
-                const response = await axios.put('http://localhost/IPT_FINAL_PROJ/backend/index.php/update-profile', {
+                const response = await axios.put('https://act-track.x10.mx/index.php/update-profile', {
                     user_id: this.userProfile.user_id,
                     f_name: this.userProfile.f_name,
                     l_name: this.userProfile.l_name,

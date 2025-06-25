@@ -93,70 +93,32 @@
 
                     <!-- Right Section -->
                     <div class="w-1/2 flex flex-col space-y-6">
-                        <div class="bg-base-100 rounded-2xl p-6 shadow-lg border border-base-300 flex-1">
-                            <h3 class="font-bold text-xl mb-4 text-secondary">Submit Task Proof</h3>
-                            
-                            <!-- Enhanced Drop Zone -->
-                            <div
-                                class="border-2 border-dashed border-secondary/30 rounded-2xl p-8 text-center hover:border-secondary/60 transition-all duration-300 cursor-pointer bg-gradient-to-br from-secondary/5 to-secondary/10 hover:from-secondary/10 hover:to-secondary/15 mb-6"
-                                @click="triggerFileUpload"
-                                @dragover.prevent="onDragOver"
-                                @dragleave.prevent="onDragLeave"
-                                @drop.prevent="onDrop"
-                                :class="{'border-secondary bg-secondary/20 scale-[1.02]': isDragging}"
-                            >
-                                <div class="p-4 bg-secondary/10 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        <div class="bg-base-100 rounded-2xl p-6 shadow-lg border border-base-300 flex-1 flex flex-col justify-center items-center">
+                            <div class="text-center mb-8">
+                                <div class="w-24 h-24 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-12 h-12 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
                                 </div>
-                                <p class="font-semibold text-secondary mb-2">Drop images here or click to browse</p>
-                                <p class="text-sm text-base-content/60">PNG, JPG, GIF up to 10MB</p>
-                                <input type="file" ref="fileInput" class="hidden" accept="image/*" multiple @change="onFileChange">
+                                <h3 class="font-bold text-xl mb-2 text-success">
+                                    Mark Task as Complete
+                                </h3>
+                                <p class="text-base-content/70">
+                                    Click the button below to mark this task as completed.
+                                </p>
                             </div>
-
-                            <!-- Image Gallery -->
-                            <div class="max-h-48 overflow-y-auto rounded-xl bg-base-200/50 p-4" v-if="images.length > 0">
-                                <div class="grid grid-cols-3 gap-3">
-                                    <div
-                                        v-for="(img, index) in images"
-                                        :key="index"
-                                        class="relative group"
-                                    >
-                                        <div class="aspect-square rounded-xl overflow-hidden bg-base-300 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                                            <img
-                                                :src="img.src"
-                                                :alt="img.name"
-                                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                            />
-                                            <button
-                                                type="button"
-                                                class="absolute -top-2 -right-2 bg-error text-error-content rounded-full w-7 h-7 flex items-center justify-center shadow-lg hover:bg-error/80 transition-all duration-200 opacity-0 group-hover:opacity-100"
-                                                @click="removeImage(index)"
-                                            >
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <p class="text-xs text-center mt-2 truncate font-medium" :title="img.name">
-                                            {{ img.name }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
+                            
                             <!-- Submit Button -->
                             <button 
                                 type="submit" 
-                                class="btn w-full bg-gradient-to-r from-success to-success/80 hover:from-success/90 hover:to-success/70 text-success-content border-none shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] font-bold text-lg py-4 rounded-2xl mt-6"
-                                :disabled="images.length === 0 || isSubmitting"
+                                class="btn w-full bg-gradient-to-r from-success to-success/80 hover:from-success/90 hover:to-success/70 text-success-content border-none shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] font-bold text-lg py-4 rounded-2xl"
+                                :disabled="isSubmitting"
                             >
                                 <svg v-if="!isSubmitting" class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <span v-if="isSubmitting" class="loading loading-spinner loading-sm mr-2"></span>
-                                {{ isSubmitting ? 'Submitting...' : 'Submit Task' }}
+                                {{ isSubmitting ? 'Submitting...' : 'Mark as Complete' }}
                             </button>
                         </div>
                     </div>
@@ -176,9 +138,10 @@
                             </svg>
                         </div>
                         <div>
-                            <h2 class="font-black text-3xl text-error tracking-wide">Cedrick's Tasks</h2>
+                            <h2 class="font-black text-3xl text-error tracking-wide">{{ currentUser.f_name }}'s Tasks</h2>
                         </div>
                     </div>
+                    
                     <!-- Filter Controls -->
                     <div class="flex gap-3">
                         <select v-model="statusFilter" @change="fetchTasks" class="select select-bordered select-sm">
@@ -272,6 +235,7 @@
                                         @click="openModal(task)"
                                         class="btn btn-sm btn-primary"
                                         title="View Details"
+                                        :disabled="submittedTasks.includes(task.task_id) || task.status === 'Done' || task.status === 'Submitted Late' || task.status === 'Missed'"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -289,222 +253,275 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: "TaskByDeadline",
     data() {
         return {
-            isDragging: false,
-            images: [],
             tasks: [],
             selectedTask: null,
             loading: false,
             isSubmitting: false,
             statusFilter: '',
-            sortOrder: 'asc', // 'asc' or 'desc'
+            sortOrder: 'asc',
             currentUser: {
-                user_id: 1, // This should come from authentication
-                f_name: 'John',
-                l_name: 'Doe'
-            }
+                user_id: null,
+                f_name: '',
+                l_name: '',
+                email: '',
+                created_at: '',
+            },
+            submittedTasks: [],
         };
     },
-    mounted() {
+    computed: {
+        isTaskOwner() {
+            return this.selectedTask?.owner_id === this.currentUser.user_id;
+        }
+    },
+    async mounted() {
+        await this.getCurrentUser();
         this.fetchTasks();
+        this.setupAutoStatusUpdates();
     },
     methods: {
+        async getCurrentUser() {
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user) {
+                    this.currentUser = {
+                        user_id: user.id,
+                        f_name: user.f_name,
+                        l_name: user.l_name,
+                        email: user.email,
+                        created_at: user.created_at
+                    };
+                } else {
+                    console.error('Failed to get current user');
+                }
+            } catch (error) {
+                console.error('Error getting current user:', error);
+            }
+        },
+
         async fetchTasks() {
+            if (!this.currentUser.user_id) return;
+            
             this.loading = true;
             try {
-                // Simulate API call - replace with actual API endpoint
-                const response = await this.mockFetchTasks();
-                this.tasks = response;
+                const res = await axios.get('https://act-track.x10.mx/index.php/fetch-user-tasks', {
+                    params: {
+                        user_id: this.currentUser.user_id,
+                        status_filter: this.statusFilter,
+                        sort_order: this.sortOrder
+                    }
+                });
+                
+                if (res.data.success) {
+                    // Update statuses immediately and get the updated tasks
+                    this.tasks = await Promise.all(res.data.data.map(async task => {
+                        const newStatus = await this.determineTaskStatus(task);
+                        return {...task, status: newStatus};
+                    }));
+                } else {
+                    console.error('Failed to fetch tasks:', res.data.message);
+                }
             } catch (error) {
                 console.error('Error fetching tasks:', error);
-                // You could show a toast notification here
             } finally {
                 this.loading = false;
             }
         },
-
-        // Mock API call - replace with actual API integration
-        async mockFetchTasks() {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 500));
+        filterTasks(tasks) {
+            let filtered = [...tasks];
             
-            // Mock data matching your database schema
-            let tasks = [
-                {
-                    task_id: 1,
-                    project_id: 1,
-                    title: 'Create a Dashboard for IPT',
-                    description: 'Create a dashboard for IPT. Add some analytics and other stuffs',
-                    status: 'Near Deadline',
-                    start_date: '2024-10-01',
-                    due_date: '2024-10-17',
-                    project_name: 'IPT222 - ActTrack',
-                    created_at: '2024-09-15 10:00:00'
-                },
-                {
-                    task_id: 2,
-                    project_id: 1,
-                    title: 'Database Design and Setup',
-                    description: 'Design and implement the database schema for the task management system',
-                    status: 'In Progress',
-                    start_date: '2024-10-05',
-                    due_date: '2024-10-20',
-                    project_name: 'IPT222 - ActTrack',
-                    created_at: '2024-09-20 14:30:00'
-                },
-                {
-                    task_id: 3,
-                    project_id: 2,
-                    title: 'User Authentication Module',
-                    description: 'Implement user registration, login, and authentication features',
-                    status: 'Not Started',
-                    start_date: '2024-10-10',
-                    due_date: '2024-10-25',
-                    project_name: 'Web Development Project',
-                    created_at: '2024-09-25 09:15:00'
-                }
-            ];
-            
-            // Apply status filter
+            // Apply status filter if set
             if (this.statusFilter) {
-                tasks = tasks.filter(task => task.status === this.statusFilter);
+                filtered = filtered.filter(task => task.status === this.statusFilter);
+            }
+            
+            // Apply search query if set
+            if (this.searchQuery) {
+                const query = this.searchQuery.toLowerCase();
+                filtered = filtered.filter(task => 
+                    task.title.toLowerCase().includes(query) ||
+                    task.description.toLowerCase().includes(query) ||
+                    task.project_name.toLowerCase().includes(query)
+                );
             }
             
             // Apply sorting
-            tasks.sort((a, b) => {
+            filtered.sort((a, b) => {
                 const dateA = new Date(a.due_date);
                 const dateB = new Date(b.due_date);
                 return this.sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
             });
             
-            return tasks;
+            return filtered;
         },
 
-        openModal(task = null) {
-            this.selectedTask = task;
-            this.images = []; // Reset images when opening modal
-            document.getElementById('my_modal_4').showModal();
+        onSearchInput() {
+            if (this.originalTasks.length > 0) {
+                this.tasks = this.filterTasks(this.originalTasks);
+            }
+        },
+
+        setupAutoStatusUpdates() {
+            // Update statuses every hour
+            setInterval(async () => {
+                this.tasks = await Promise.all(this.tasks.map(async task => {
+                    const newStatus = await this.determineTaskStatus(task);
+                    return { ...task, status: newStatus };
+                }));
+            }, 3600000); // 1 hour
+        },
+
+        async determineTaskStatus(task) {
+            const now = new Date();
+            const dueDate = new Date(task.due_date);
+            const startDate = new Date(task.start_date);
+            
+            // If task is already done, don't change status
+            if (task.status === 'Done' || task.status === 'Submitted Late' || task.status === 'Missed') {
+                return task.status;
+            }
+            
+            let newStatus = task.status;
+            
+            // Check if task is missed
+            if (now > dueDate) {
+                newStatus = 'Missed';
+            }
+            // Check if task is near deadline (within 24 hours)
+            else if ((dueDate - now) / (1000 * 60 * 60) <= 24 && task.status !== 'Near Deadline') {
+                newStatus = 'Near Deadline';
+            }
+            // Check if task is in progress (start date has passed)
+            else if (now >= startDate && task.status === 'Not Started') {
+                newStatus = 'In Progress';
+            }
+            
+            // If status changed, update in database
+            if (newStatus !== task.status) {
+                await this.updateTaskStatus(task.task_id, this.currentUser.user_id, newStatus);
+            }
+            
+            return newStatus;
         },
 
         async submitTask() {
-            if (!this.selectedTask || this.images.length === 0) return;
+            if (!this.selectedTask) return;
             
             this.isSubmitting = true;
             try {
-                // Create form data for file upload
-                const formData = new FormData();
-                formData.append('task_id', this.selectedTask.task_id);
-                formData.append('submitted_by', this.currentUser.user_id);
+                let newStatus = 'Done';
+                const now = new Date();
+                const dueDate = new Date(this.selectedTask.due_date);
                 
-                // Add each image to form data
-                this.images.forEach((image, index) => {
-                    formData.append(`photos[${index}]`, image.file);
-                });
+                // Check if submission is late
+                if (now > dueDate) {
+                    newStatus = 'Submitted Late';
+                }
+                
+                // Update task status
+                await this.updateTaskStatus(
+                    this.selectedTask.task_id, 
+                    this.currentUser.user_id, 
+                    newStatus
+                );
+                
+                // Add to submitted tasks array
+                this.submittedTasks.push(this.selectedTask.task_id);
 
-                // Simulate API call - replace with actual submission
-                await this.mockSubmitTask(formData);
+                // If user is not the task owner, send notification to owner
+                if (!this.isTaskOwner) {
+                    await this.sendNotification(
+                        this.selectedTask.owner_id,
+                        'task_submitted',
+                        `${this.currentUser.f_name} has marked task "${this.selectedTask.title}" as complete`,
+                        this.selectedTask.task_id
+                    );
+                }
                 
-                // Update task status to Done
-                await this.updateTaskStatus(this.selectedTask.task_id, 'Done');
-                
-                // Reset form and close modal
-                this.images = [];
+                // Close modal
                 document.getElementById('my_modal_4').close();
-                
-                // Show success message (you could use a toast library)
-                alert('Task submitted successfully!');
+                this.fetchTasks();
                 
             } catch (error) {
                 console.error('Error submitting task:', error);
-                alert('Error submitting task. Please try again.');
+                alert('Failed to submit task: ' + error.message);
             } finally {
                 this.isSubmitting = false;
             }
         },
 
-        async mockSubmitTask(formData) {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            // In real implementation, this would make a POST request to your API
-            console.log('Submitting task with images:', formData);
-            return { success: true, submission_id: Date.now() };
-        },
-
-        async updateTaskStatus(taskId, newStatus) {
+        async updateTaskStatus(taskId, userId, newStatus) {
             try {
-                // Simulate API call - replace with actual API endpoint
-                await this.mockUpdateTaskStatus(taskId, newStatus);
+
+                const payload = {
+                    task_id: Number(taskId),
+                    user_id: Number(userId),
+                    status: String(newStatus).trim()
+                };
+
+                console.log("Sending payload:", payload); // Debug log
+
+                const res = await axios.post(
+                    'https://act-track.x10.mx/index.php/update-task-status', 
+                    payload, // Stringify the payload
+                    {
+                        headers: {
+                            'Content-Type': 'application/json' // Set proper header
+                        }
+                    }
+                );
                 
-                // Update local state
-                const taskIndex = this.tasks.findIndex(t => t.task_id === taskId);
-                if (taskIndex !== -1) {
-                    this.tasks[taskIndex].status = newStatus;
+                  console.log("Response received:", res.data); // Log successful respons
+
+                if (res.data.success) {
+                    // Update local state
+                    const taskIndex = this.tasks.findIndex(t => t.task_id === taskId);
+                    if (taskIndex !== -1) {
+                        this.tasks[taskIndex].status = newStatus;
+                        if (this.tasks[taskIndex].user_status) {
+                            this.tasks[taskIndex].user_status = newStatus;
+                        }
+                    }
+                    
+                    if (this.selectedTask && this.selectedTask.task_id === taskId) {
+                        this.selectedTask.status = newStatus;
+                        if (this.selectedTask.user_status) {
+                            this.selectedTask.user_status = newStatus;
+                        }
+                    }
+                    
+                    return true;
                 }
-                
-                // Update selected task if it's the same
-                if (this.selectedTask && this.selectedTask.task_id === taskId) {
-                    this.selectedTask.status = newStatus;
-                }
-                
+                return false;
             } catch (error) {
                 console.error('Error updating task status:', error);
+                return false;
             }
         },
 
-        async mockUpdateTaskStatus(taskId, newStatus) {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 300));
-            console.log(`Updating task ${taskId} status to ${newStatus}`);
-            return { success: true };
+        async sendNotification(userId, type, message, relatedId = null) {
+            try {
+                await axios.post('https://act-track.x10.mx/index.php/send-notification', {
+                    user_id: userId,
+                    type: type,
+                    message: message,
+                    related_id: relatedId
+                });
+            } catch (error) {
+                console.error('Error sending notification:', error);
+                console.error('Error details:', error.response?.data);
+            }
         },
 
-        triggerFileUpload() {
-            this.$refs.fileInput.click();
-        },
-
-        onFileChange(e) {
-            const files = Array.from(e.target.files);
-            this.handleFiles(files);
-        },
-
-        onDragOver() {
-            this.isDragging = true;
-        },
-
-        onDragLeave() {
-            this.isDragging = false;
-        },
-
-        onDrop(e) {
-            this.isDragging = false;
-            const files = Array.from(e.dataTransfer.files);
-            this.handleFiles(files);
-        },
-
-        handleFiles(files) {
-            files.forEach((file) => {
-                if (file.type.startsWith("image/") && file.size <= 10 * 1024 * 1024) { // 10MB limit
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        this.images.push({ 
-                            src: e.target.result, 
-                            name: file.name,
-                            file: file 
-                        });
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    alert(`File ${file.name} is either not an image or exceeds 10MB limit`);
-                }
-            });
-        },
-
-        removeImage(index) {
-            this.images.splice(index, 1);
+        openModal(task = null) {
+            this.selectedTask = task;
+            document.getElementById('my_modal_4').showModal();
         },
 
         formatDate(dateString) {
@@ -523,7 +540,7 @@ export default {
             const due = new Date(dueDate);
             const diffTime = due - today;
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays <= 1 && diffDays >= 0; // Due today or tomorrow
+            return diffDays <= 1 && diffDays >= 0;
         },
 
         getDueDateClass(dueDate) {
@@ -632,18 +649,6 @@ export default {
     transform: translateX(4px);
 }
 
-/* Custom file input styling */
-input[type="file"] {
-    opacity: 0;
-    position: absolute;
-    pointer-events: none;
-}
-
-/* Image gallery animations */
-.aspect-square img {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 /* Status indicator pulse animation */
 @keyframes pulse-glow {
     0%, 100% {
@@ -750,5 +755,11 @@ input:focus {
         background: #374151 !important;
         color: white !important;
     }
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
 }
 </style>

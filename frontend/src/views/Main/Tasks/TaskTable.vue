@@ -54,7 +54,7 @@ export default {
     },
     methods: {
         async FetchTasks() {
-            const res = await axios.get('http://localhost/IPT_FINAL_PROJ/backend/index.php/fetchalltask',{params:{ user_id: this.GetUserIDFromLocal()}});
+            const res = await axios.get('https://act-track.x10.mx/index.php/fetchalltask',{params:{ user_id: this.GetUserIDFromLocal()}});
 
             if(res.data.success) {
                 this.tables = res.data.data;

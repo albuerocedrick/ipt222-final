@@ -3,10 +3,10 @@
         <mini-calendar />
         <total-completed-task />
         <total-pending-tasks />
-        <missed-task />
+        <recent-notif />
         <upcoming-deadline/>
         <project-list />
-        <recent-notif />
+        <!-- <missed-task /> -->
     </div>
 </template>
 

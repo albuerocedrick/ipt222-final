@@ -92,10 +92,7 @@
                                 <div class="flex-1">
                                     <h3 class="font-bold text-xl text-primary mb-1">{{ project.project_name }}</h3>
                                     <div class="flex items-center gap-3 text-sm">
-                                        <span v-if="project.is_owner" class="px-3 py-1 bg-gradient-to-r from-primary to-primary/80 text-white rounded-full text-xs font-semibold">Owner</span>
-                                        <span v-else-if="project.permission_level === 'admin'" class="px-3 py-1 bg-gradient-to-r from-secondary to-secondary/80 text-white rounded-full text-xs font-semibold">Admin</span>
-                                        <span v-else class="px-3 py-1 bg-base-300 text-base-content/70 rounded-full text-xs font-semibold">Member</span>
-                                        <span class="text-base-content/40">•</span>
+                                        
                                         <span class="text-base-content/60 font-medium">{{ formatDate(project.created_at) }}</span>
                                     </div>
                                 </div>
@@ -240,7 +237,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            userId: '1000000',
+            userId: '',
             projects: [],
             sortedProjects: [],
             loading: false,
@@ -271,14 +268,15 @@ export default {
             this.loading = true;
             try {
                 const userId = this.getUserIDFromLocal();
-                const res = await axios.get('http://localhost/IPT_FINAL_PROJ/backend/index.php/fetch-user-projects', {
+                const res = await axios.get('https://act-track.x10.mx/index.php/fetch-user-projects', {
                     params: { user_id: userId }
                 });
 
                 if (res.data.success) {
                     this.projects = res.data.data.map(project => ({
                         ...project,
-                        is_owner: project.owner_id === userId
+                        is_owner: project.owner_id === userId.toString(), // Use == for loose comparison since IDs might be strings/numbers
+                        permission_level: project.is_collaborator_owner ? 'admin' : 'member'
                     }));
                     this.sortProjects(this.sortBy);
                 } else {
@@ -314,9 +312,17 @@ export default {
         },
 
         selectProject(project) {
+            console.log('Project:', project.selectedProject);
+            console.log('Is owner:', project.selectedProject?.is_owner);
+            console.log('Permission level:', project.selectedProject?.permission_level);
+            console.log('Can manage tasks:', project.canManageTasks);
             this.activeProjectID = project.project_id;
-            this.$bus.$emit("FetchTasksByProj", project.project_id);
-            this.$bus.$emit("ProjectSelected", project);
+            // Ensure all permission fields are included
+            this.$bus.$emit("ProjectSelected", {
+                ...project,
+                is_owner: project.owner_id == this.getUserIDFromLocal(),
+                permission_level: project.permission_level // Make sure this exists
+            });
         },
 
         getProjectInitials(name) {
@@ -366,7 +372,7 @@ export default {
         async createProject() {
             try {
                 const userId = this.getUserIDFromLocal();
-                const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/create-project', {
+                const res = await axios.post('https://act-track.x10.mx/index.php/create-project', {
                     owner_id: userId,
                     project_name: this.newProject.name,
                     description: this.newProject.description
@@ -399,7 +405,7 @@ export default {
 
         async updateProject() {
             try {
-                const res = await axios.put('http://localhost/IPT_FINAL_PROJ/backend/index.php/update-project', {
+                const res = await axios.put('https://act-track.x10.mx/index.php/update-project', {
                     project_id: this.editingProject.project_id,
                     project_name: this.editingProject.project_name,
                     description: this.editingProject.description
@@ -423,7 +429,7 @@ export default {
             }
 
             try {
-                const res = await axios.delete('http://localhost/IPT_FINAL_PROJ/backend/index.php/delete-project', {
+                const res = await axios.delete('https://act-track.x10.mx/index.php/delete-project', {
                     data: { project_id: project.project_id }
                 });
 
@@ -449,7 +455,7 @@ export default {
 
             try {
                 const userId = this.getUserIDFromLocal();
-                const res = await axios.delete('http://localhost/IPT_FINAL_PROJ/backend/index.php/leave-project', {
+                const res = await axios.delete('https://act-track.x10.mx/index.php/leave-project', {
                     data: { 
                         project_id: project.project_id, 
                         user_id: userId 
@@ -474,13 +480,13 @@ export default {
         handleSuccess(message) {
             this.success = message;
             this.error = '';
-            alert(this.success);
+            // alert(this.success);
         },
 
         handleError(message) {
             this.error = message;
             this.success = '';
-            alert(this.error);
+            // alert(this.error);
         }
     },
 

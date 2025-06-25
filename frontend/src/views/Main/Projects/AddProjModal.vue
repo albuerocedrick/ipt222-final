@@ -50,7 +50,7 @@ export default {
             const userCred = JSON.parse(localStorage.getItem('user'));
             this.form.id = userCred.id;
 
-            const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/add', this.form);
+            const res = await axios.post('https://act-track.x10.mx/index.php/add', this.form);
 
             if(res.data.success) {
                 this.success = res.data.message;

@@ -1,4 +1,6 @@
 <?php 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class User {
     private $conn;
@@ -16,7 +18,6 @@ class User {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row['count'] > 0;
     }
-
 
     public function Signup($data) {
         if($this->Exists($data['email'])) {
@@ -48,6 +49,72 @@ class User {
 
         return ["success" => false, 
                 "message" => "User doesn't exist"];
+    }
+
+    public function verifyPassword($data) {
+        $userId = $data['user_id'] ?? null;
+        $currentPassword = $data['current_password'] ?? '';
+
+        if (!$userId) {
+            return ["success" => false, "message" => "User ID not provided"];
+        }
+
+        // Get user's current password hash
+        $query = "SELECT password FROM users WHERE user_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([$userId]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            return ["success" => false, "message" => "User not found"];
+        }
+
+        if (password_verify($currentPassword, $user['password'])) {
+            return ["success" => true, "message" => "Password verified"];
+        } else {
+            return ["success" => false, "message" => "Current password is incorrect"];
+        }
+    }
+
+    public function updatePassword($data) {
+        $userId = $data['user_id'] ?? null;
+        $currentPassword = $data['current_password'] ?? '';
+        $newPassword = $data['new_password'] ?? '';
+        $confirmPassword = $data['confirm_password'] ?? '';
+
+        if (!$userId) {
+            return ["success" => false, "message" => "User ID not provided", "requires_reauthentication" => true];
+        }
+
+        // Validate passwords match
+        if ($newPassword !== $confirmPassword) {
+            return ["success" => false, "message" => "Passwords do not match"];
+        }
+
+        // Validate password strength
+        if (strlen($newPassword) < 8) {
+            return ["success" => false, "message" => "Password must be at least 8 characters long"];
+        }
+
+        // Verify current password again
+        $verifyResult = $this->verifyPassword(['user_id' => $userId, 'current_password' => $currentPassword]);
+        if (!$verifyResult['success']) {
+            return $verifyResult;
+        }
+
+        // Hash new password
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        // Update password in database
+        $query = "UPDATE users SET password = ? WHERE user_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $success = $stmt->execute([$hashedPassword, $userId]);
+
+        if ($success) {
+            return ["success" => true, "message" => "Password updated successfully"];
+        } else {
+            return ["success" => false, "message" => "Failed to update password"];
+        }
     }
 
     // for updating user profile
@@ -116,59 +183,7 @@ class User {
         }
     }
 
-    public function AddMember($project_id, $email, $permission_level, $added_by) {
-        try {
-            // 1. Check if the user exists
-            $userStmt = $this->conn->prepare("SELECT user_id FROM users WHERE email = ?");
-            $userStmt->execute([$email]);
-            $user = $userStmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$user) {
-                return [
-                    "success" => false,
-                    "message" => "User with this email does not exist."
-                ];
-            }
-
-            $user_id = $user['user_id'];
-
-            // 2. Check if the user is already a collaborator
-            $checkStmt = $this->conn->prepare("SELECT * FROM collaborators WHERE project_id = ? AND user_id = ?");
-            $checkStmt->execute([$project_id, $user_id]);
-
-            if ($checkStmt->rowCount() > 0) {
-                return [
-                    "success" => false,
-                    "message" => "User is already a member of this project."
-                ];
-            }
-
-            // 3. Insert into collaborators table (without status)
-            $insertStmt = $this->conn->prepare("
-                INSERT INTO collaborators (project_id, user_id, permission_level, added_by) 
-                VALUES (?, ?, ?, ?)
-            ");
-            $insertStmt->execute([$project_id, $user_id, $permission_level, $added_by]);
-
-            return [
-                "success" => true,
-                "message" => "Member added successfully!"
-            ];
-
-        } catch (PDOException $e) {
-            return [
-                "success" => false,
-                "message" => "Database error: " . $e->getMessage()
-            ];
-        } catch (Exception $e) {
-            return [
-                "success" => false,
-                "message" => "Unexpected error: " . $e->getMessage()
-            ];
-        }
-    }
-
-
+    
 }
 
 ?>

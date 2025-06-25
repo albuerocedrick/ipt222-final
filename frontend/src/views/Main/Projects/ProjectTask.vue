@@ -97,7 +97,6 @@
                                 
                                 <div class="flex items-center gap-2">
                                     <span v-if="member.is_owner" class="px-2 py-1 bg-gradient-to-r from-primary to-primary/80 text-white rounded-full text-xs font-semibold">Owner</span>
-                                    <span v-else-if="member.permission_level === 'admin'" class="px-2 py-1 bg-gradient-to-r from-secondary to-secondary/80 text-white rounded-full text-xs font-semibold">Admin</span>
                                     <span v-else class="px-2 py-1 bg-base-300 text-base-content/70 rounded-full text-xs font-semibold">Member</span>
                                     
                                     <div v-if="canManageMembers && !member.is_owner" class="dropdown dropdown-end">
@@ -112,6 +111,23 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- <div v-if="member.total_tasks > 0" class="mt-3">
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-gray-500">Personal Progress</span>
+                                    <span class="font-medium">
+                                        {{ member.completed_tasks }}/{{ member.total_tasks }} ({{ member.completion_percentage }}%)
+                                    </span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="h-2 rounded-full" 
+                                        :class="member.progress_color"
+                                        :style="{ width: member.completion_percentage + '%' }">
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="mt-3 text-xs text-gray-500">
+                                No assigned tasks
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -169,17 +185,21 @@
                                     <p class="text-base-content/70 text-sm mb-4">{{ task.description }}</p>
                                     
                                     <div class="flex items-center gap-4 text-sm">
-                                        <div class="flex items-center gap-2">
+                                        <!-- <div class="flex items-center gap-2">
                                             <span class="text-base-content/60">Status:</span>
                                             <span class="px-3 py-1 rounded-full text-xs font-semibold" :class="getStatusBadgeClass(task.status)">
                                                 {{ task.status }}
                                             </span>
-                                        </div>
+                                        </div> -->
                                         <div v-if="task.due_date" class="flex items-center gap-2">
                                             <span class="text-base-content/60">Due:</span>
                                             <span class="font-medium" :class="getDueDateClass(task.due_date)">
                                                 {{ formatDate(task.due_date) }}
                                             </span>
+                                        </div>
+                                        <div v-if="task.is_individual" class="flex items-center gap-2">
+                                            <span class="text-base-content/60">Type:</span>
+                                            <span class="font-medium">Individual</span>
                                         </div>
                                     </div>
                                 </div>
@@ -202,33 +222,35 @@
             </div>
         </div>
 
-        <!-- Add Task Modal -->
+        <!-- Add/Edit Task Modal -->
         <dialog ref="addTaskModal" class="modal">
             <div class="modal-box bg-gradient-to-br from-base-100 to-base-200 rounded-3xl border border-primary/20 shadow-2xl max-w-lg">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="p-3 bg-primary/20 rounded-xl">
                         <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                         </svg>
                     </div>
-                    <h3 class="font-bold text-2xl text-primary">Create New Task</h3>
+                    <h3 class="font-bold text-2xl text-primary">
+                        {{ newTask.task_id ? 'Edit Task' : 'Create New Task' }}
+                    </h3>
                 </div>
                 
-                <form @submit.prevent="createTask" class="space-y-4">
+                <form @submit.prevent="newTask.task_id ? updateTask() : createTask()" class="space-y-4">
                     <div class="form-control flex flex-col">
                         <label class="label">
                             <span class="label-text font-semibold text-base-content/80">Task Title</span>
                         </label>
                         <input v-model="newTask.title" type="text" placeholder="Enter task title" 
-                               class="w-full input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" required>
+                            class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50 w-full" required>
                     </div>
                     
-                    <div class="form-control">
+                    <div class="form-control flex flex-col">
                         <label class="label">
                             <span class="label-text font-semibold text-base-content/80">Description</span>
                         </label>
-                        <textarea v-model="newTask.description" class="textarea textarea-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" 
-                                  placeholder="Task description" rows="3"></textarea>
+                        <textarea v-model="newTask.description" class="w-full textarea textarea-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" 
+                                placeholder="Task description" rows="3"></textarea>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
@@ -237,7 +259,7 @@
                                 <span class="label-text font-semibold text-base-content/80">Start Date</span>
                             </label>
                             <input v-model="newTask.start_date" type="date" 
-                                   class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50">
+                                class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50">
                         </div>
                         
                         <div class="form-control">
@@ -245,7 +267,35 @@
                                 <span class="label-text font-semibold text-base-content/80">Due Date</span>
                             </label>
                             <input v-model="newTask.due_date" type="date" 
-                                   class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50">
+                                class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold text-base-content/80">Task Type</span>
+                            </label>
+                            <select v-model="newTask.is_individual" 
+                                    class="select select-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50">
+                                <option :value="false">Group Task</option>
+                                <option :value="true">Individual Task</option>
+                            </select>
+                        </div>
+                        
+                        <div v-if="newTask.task_id" class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold text-base-content/80">Status</span>
+                            </label>
+                            <select v-model="newTask.status" 
+                                    class="select select-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50">
+                                <option value="Not Started">Not Started</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Near Deadline">Near Deadline</option>
+                                <option value="Done">Done</option>
+                                <option value="Submitted Late">Submitted Late</option>
+                                <option value="Missed">Missed</option>
+                            </select>
                         </div>
                     </div>
                     
@@ -253,9 +303,9 @@
                         <button type="button" class="btn btn-ghost rounded-xl hover:bg-base-200/50 transition-all duration-200" @click="closeAddTaskModal">Cancel</button>
                         <button type="submit" class="btn btn-primary rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300" :disabled="!newTask.title.trim()">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
-                            Create Task
+                            {{ newTask.task_id ? 'Update Task' : 'Create Task' }}
                         </button>
                     </div>
                 </form>
@@ -264,6 +314,7 @@
                 <button @click="closeAddTaskModal">close</button>
             </form>
         </dialog>
+
         <!-- Add Member Modal -->
         <dialog ref="addMemberModal" class="modal">
             <div class="modal-box bg-gradient-to-br from-base-100 to-base-200 rounded-3xl border border-primary/20 shadow-2xl max-w-lg">
@@ -283,17 +334,6 @@
                         </label>
                         <input v-model="newMember.email" type="email" placeholder="Enter member's email" 
                             class="w-full input input-bordered rounded-xl border-primary/20 focus:border-secondary focus:ring-2 focus:ring-secondary/20 bg-base-200/50" required>
-                    </div>
-                    
-                    <div class="form-control flex flex-col">
-                        <label class="label">
-                            <span class="label-text font-semibold text-base-content/80">Permission Level</span>
-                        </label>
-                        <select v-model="newMember.permission_level" 
-                                class="w-full select select-bordered rounded-xl border-primary/20 focus:border-secondary focus:ring-2 focus:ring-secondary/20 bg-base-200/50">
-                            <option value="member">Member</option>
-                            <option value="admin">Admin</option>
-                        </select>
                     </div>
                     
                     <div class="modal-action gap-3 pt-4">
@@ -408,86 +448,6 @@
                 <button @click="closeDeleteProjectModal">close</button>
             </form>
         </dialog>
-
-        <!-- Enhanced Add/Edit Task Modal -->
-        <dialog ref="addTaskModal" class="modal">
-            <div class="modal-box bg-gradient-to-br from-base-100 to-base-200 rounded-3xl border border-primary/20 shadow-2xl max-w-lg">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="p-3 bg-primary/20 rounded-xl">
-                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                        </svg>
-                    </div>
-                    <h3 class="font-bold text-2xl text-primary">
-                        {{ newTask.task_id ? 'Edit Task' : 'Create New Task' }}
-                    </h3>
-                </div>
-                
-                <form @submit.prevent="newTask.task_id ? updateTask() : createTask()" class="space-y-4">
-                    <div class="form-control flex flex-col">
-                        <label class="label">
-                            <span class="label-text font-semibold text-base-content/80">Task Title</span>
-                        </label>
-                        <input v-model="newTask.title" type="text" placeholder="Enter task title" 
-                            class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50 w-full" required>
-                    </div>
-                    
-                    <div class="form-control flex flex-col">
-                        <label class="label">
-                            <span class="label-text font-semibold text-base-content/80">Description</span>
-                        </label>
-                        <textarea v-model="newTask.description" class="w-full textarea textarea-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50" 
-                                placeholder="Task description" rows="3"></textarea>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold text-base-content/80">Start Date</span>
-                            </label>
-                            <input v-model="newTask.start_date" type="date" 
-                                class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50">
-                        </div>
-                        
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold text-base-content/80">Due Date</span>
-                            </label>
-                            <input v-model="newTask.due_date" type="date" 
-                                class="input input-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50">
-                        </div>
-                    </div>
-                    
-                    <div v-if="newTask.task_id" class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-base-content/80">Status</span>
-                        </label>
-                        <select v-model="newTask.status" 
-                                class="select select-bordered rounded-xl border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-base-200/50">
-                            <option value="Not Started">Not Started</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Near Deadline">Near Deadline</option>
-                            <option value="Done">Done</option>
-                            <option value="Submitted Late">Submitted Late</option>
-                            <option value="Missed">Missed</option>
-                        </select>
-                    </div>
-                    
-                    <div class="modal-action gap-3 pt-4">
-                        <button type="button" class="btn btn-ghost rounded-xl hover:bg-base-200/50 transition-all duration-200" @click="closeAddTaskModal">Cancel</button>
-                        <button type="submit" class="btn btn-primary rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-300" :disabled="!newTask.title.trim()">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                            {{ newTask.task_id ? 'Update Task' : 'Create Task' }}
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <form method="dialog" class="modal-backdrop">
-                <button @click="closeAddTaskModal">close</button>
-            </form>
-        </dialog>
     </div>
 </template>
 
@@ -504,15 +464,20 @@ export default {
             loadingMembers: false,
             error: '',
             success: '',
+            projectStats: {
+                totalTasks: 0,
+                completedTasks: 0
+            },
             newTask: {
                 title: '',
                 description: '',
                 start_date: '',
-                due_date: ''
+                due_date: '',
+                status: 'Not Started',
+                is_individual: false
             },
             newMember: {
                 email: '',
-                permission_level: 'member'
             },
             editingProject: {
                 project_id: null,
@@ -556,7 +521,7 @@ export default {
         async fetchTasksByProject(projectId) {
             this.loadingTasks = true;
             try {
-                const res = await axios.get('http://localhost/IPT_FINAL_PROJ/backend/index.php/fetchtaskbyprojid', {
+                const res = await axios.get('https://act-track.x10.mx/index.php/fetchtaskbyprojid', {
                     params: { project_id: projectId }
                 });
 
@@ -575,25 +540,48 @@ export default {
         async fetchProjectMembers(projectId) {
             this.loadingMembers = true;
             try {
-                const res = await axios.get('http://localhost/IPT_FINAL_PROJ/backend/index.php/fetch-project-members', {
+                const res = await axios.get('https://act-track.x10.mx/index.php/fetch-project-members', {
                     params: { project_id: projectId }
                 });
 
                 if (res.data.success) {
-                    this.members = res.data.data;
+                    this.members = res.data.data.map(member => {
+                        // Calculate individual completion percentage
+                        const total = member.total_tasks || 0;
+                        const completed = member.completed_tasks || 0;
+                        const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+                        
+                        return {
+                            ...member,
+                            completion_percentage: percentage,
+                            progress_color: this.getProgressColor(percentage)
+                        };
+                    });
                 } else {
                     this.handleError('Failed to load members');
                 }
             } catch (error) {
-                this.handleError('Something went wrong during member fetch');
+                console.error('Member fetch error:', error);
+                this.handleError('Error loading members');
             } finally {
                 this.loadingMembers = false;
             }
         },
         
+        getProgressColor(percentage) {
+            if (percentage >= 80) return 'bg-success';
+            if (percentage >= 50) return 'bg-warning';
+            return 'bg-error';
+        },
+        getCompletionPercentage() {
+            if (this.projectStats.totalTasks === 0) return 0;
+            return Math.round((this.projectStats.completedTasks / this.projectStats.totalTasks) * 100);
+        },
+        
         onProjectSelected(project) {
             this.selectedProject = project;
             this.fetchProjectMembers(project.project_id);
+            this.fetchTasksByProject(project.project_id);
         },
         
         onProjectDeleted() {
@@ -621,6 +609,7 @@ export default {
         },
         
         formatDate(dateString) {
+            if (!dateString) return '';
             const date = new Date(dateString);
             return date.toLocaleDateString('en-US', {
                 month: 'short',
@@ -642,6 +631,7 @@ export default {
         },
         
         getDueDateClass(dueDateString) {
+            if (!dueDateString) return 'text-base-content';
             const dueDate = new Date(dueDateString);
             const today = new Date();
             const timeDiff = dueDate - today;
@@ -653,62 +643,21 @@ export default {
             return 'text-base-content';
         },
         
-        // Modal methods
+        // Task Methods
         openAddTaskModal() {
             this.newTask = {
                 title: '',
                 description: '',
                 start_date: '',
-                due_date: ''
+                due_date: '',
+                status: 'Not Started',
+                is_individual: false
             };
             this.$refs.addTaskModal.showModal();
         },
         
         closeAddTaskModal() {
             this.$refs.addTaskModal.close();
-        },
-        
-        async createTask() {
-            try {
-                const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/create-task-in-projects', {
-                    project_id: this.selectedProject.project_id,
-                    title: this.newTask.title,
-                    description: this.newTask.description,
-                    start_date: this.newTask.start_date || null,
-                    due_date: this.newTask.due_date || null
-                });
-
-                if (res.data.success) {
-                    this.handleSuccess('Task created successfully!');
-                    this.closeAddTaskModal();
-                    this.fetchTasksByProject(this.selectedProject.project_id);
-                } else {
-                    this.handleError(res.data.message || 'Failed to create task');
-                }
-            } catch (error) {
-                this.handleError('Error creating task');
-            }
-        },
-        
-        async deleteTask(task) {
-            if (!confirm(`Are you sure you want to delete "${task.title}"?`)) {
-                return;
-            }
-
-            try {
-                const res = await axios.delete('http://localhost/IPT_FINAL_PROJ/backend/index.php/delete-task', {
-                    data: { task_id: task.task_id }
-                });
-
-                if (res.data.success) {
-                    this.handleSuccess('Task deleted successfully!');
-                    this.fetchTasksByProject(this.selectedProject.project_id);
-                } else {
-                    this.handleError(res.data.message || 'Failed to delete task');
-                }
-            } catch (error) {
-                this.handleError('Error deleting task');
-            }
         },
         
         editTask(task) {
@@ -718,20 +667,46 @@ export default {
                 description: task.description,
                 start_date: task.start_date || '',
                 due_date: task.due_date || '',
-                status: task.status
+                status: task.status,
+                is_individual: task.is_individual
             };
             this.$refs.addTaskModal.showModal();
         },
 
+        async createTask() {
+            try {
+                const res = await axios.post('https://act-track.x10.mx/index.php/create-task-in-projects', {
+                    project_id: this.selectedProject.project_id,
+                    title: this.newTask.title,
+                    description: this.newTask.description,
+                    start_date: this.newTask.start_date || null,
+                    due_date: this.newTask.due_date || null,
+                    is_individual: this.newTask.is_individual
+                });
+
+                if (res.data.success) {
+                    this.handleSuccess('Task created successfully!');
+                    this.closeAddTaskModal();
+                    await this.fetchTasksByProject(this.selectedProject.project_id);
+                    await this.fetchProjectMembers(this.selectedProject.project_id); // Add this line
+                } else {
+                    this.handleError(res.data.message || 'Failed to create task');
+                }
+            } catch (error) {
+                this.handleError('Error creating task');
+            }
+        },
+
         async updateTask() {
             try {
-                const res = await axios.put('http://localhost/IPT_FINAL_PROJ/backend/index.php/update-task', {
+                const res = await axios.put('https://act-track.x10.mx/index.php/update-task-in-projects', {
                     task_id: this.newTask.task_id,
                     title: this.newTask.title,
                     description: this.newTask.description,
                     start_date: this.newTask.start_date || null,
                     due_date: this.newTask.due_date || null,
-                    status: this.newTask.status
+                    status: this.newTask.status,
+                    is_individual: this.newTask.is_individual
                 });
 
                 if (res.data.success) {
@@ -746,9 +721,57 @@ export default {
             }
         },
 
+        async deleteTask(task) {
+            if (!confirm(`Are you sure you want to delete "${task.title}"?`)) {
+                return;
+            }
+
+            try {
+                const res = await axios.delete('https://act-track.x10.mx/index.php/delete-task', {
+                    data: { task_id: task.task_id }
+                });
+
+                if (res.data.success) {
+                    this.handleSuccess('Task deleted successfully!');
+                    this.fetchTasksByProject(this.selectedProject.project_id);
+                } else {
+                    this.handleError(res.data.message || 'Failed to delete task');
+                }
+            } catch (error) {
+                this.handleError('Error deleting task');
+            }
+        },
+
+        // Member Methods
         openAddMemberModal() {
-            // Implement this if you have a modal for adding members
-            console.log('Open add member modal');
+            this.newMember = {
+                email: '',
+            };
+            this.$refs.addMemberModal.showModal();
+        },
+
+        closeAddMemberModal() {
+            this.$refs.addMemberModal.close();
+        },
+
+        async addMember() {
+            try {
+                const res = await axios.post('https://act-track.x10.mx/index.php/add-member', {
+                    project_id: this.selectedProject.project_id,
+                    email: this.newMember.email,
+                });
+
+                if (res.data.success) {
+                    this.handleSuccess('Member added successfully!');
+                    this.closeAddMemberModal();
+                    this.fetchProjectMembers(this.selectedProject.project_id);
+                } 
+                else {
+                    this.handleError(res.data.message || 'Failed to add member');
+                }
+            } catch (error) {
+                this.handleError('Error adding member');
+            }
         },
 
         async removeMember(member) {
@@ -757,7 +780,7 @@ export default {
             }
 
             try {
-                const res = await axios.delete('http://localhost/IPT_FINAL_PROJ/backend/index.php/remove-member', {
+                const res = await axios.delete('https://act-track.x10.mx/index.php/remove-member', {
                     data: {
                         project_id: this.selectedProject.project_id,
                         user_id: member.user_id
@@ -775,90 +798,12 @@ export default {
             }
         },
 
-        editProject() {
-            this.$bus.$emit("edit-project", this.selectedProject);
-        },
-
-        async deleteProject() {
-            if (!confirm(`Are you sure you want to delete "${this.selectedProject.project_name}"? This action cannot be undone.`)) {
-                return;
-            }
-
-            try {
-                const res = await axios.delete('http://localhost/IPT_FINAL_PROJ/backend/index.php/delete-project', {
-                    data: { project_id: this.selectedProject.project_id }
-                });
-
-                if (res.data.success) {
-                    this.handleSuccess('Project deleted successfully!');
-                    this.$bus.$emit("ProjectDeleted");
-                    this.selectedProject = null;
-                    this.tasks = [];
-                    this.members = [];
-                } else {
-                    this.handleError(res.data.message || 'Failed to delete project');
-                }
-            } catch (error) {
-                this.handleError('Error deleting project');
-            }
-        },
-
-        handleSuccess(message) {
-            this.success = message;
-            this.error = '';
-            alert(this.success);
-        },
-
-        handleError(message) {
-            this.error = message;
-            this.success = '';
-            alert(this.error);
-        },
-        // Add Member Modal Methods
-        openAddMemberModal() {
-            this.newMember = {
-                email: '',
-                permission_level: 'member'
-            };
-            this.$refs.addMemberModal.showModal();
-        },
-
-        closeAddMemberModal() {
-            this.$refs.addMemberModal.close();
-        },
-
-        async addMember() {
-            try {
-                const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/add-member', {
-                    project_id: this.selectedProject.project_id,
-                    email: this.newMember.email,
-                    permission_level: this.newMember.permission_level,
-                    added_by: this.currentUser()
-                });
-
-                if (res.data.success) {
-                    this.handleSuccess('Member added successfully!');
-                    this.closeAddMemberModal();
-                    this.fetchProjectMembers(this.selectedProject.project_id);
-                } else {
-                    this.handleError(res.data.message || 'Failed to add member');
-                }
-            } catch (error) {
-                this.handleError('Error adding member');
-            }
-        },
-        currentUser() {
-            const user = JSON.parse(localStorage.getItem('user'));
-            return user.id;
-        },
-
-        // Edit Project Modal Methods
+        // Project Methods
         editProject() {
             this.editingProject = {
                 project_id: this.selectedProject.project_id,
                 project_name: this.selectedProject.project_name,
                 description: this.selectedProject.description || '',
-
             };
             this.$refs.editProjectModal.showModal();
         },
@@ -869,7 +814,7 @@ export default {
 
         async updateProject() {
             try {
-                const res = await axios.put('http://localhost/IPT_FINAL_PROJ/backend/index.php/update-project', {
+                const res = await axios.put('https://act-track.x10.mx/index.php/update-project', {
                     project_id: this.editingProject.project_id,
                     project_name: this.editingProject.project_name,
                     description: this.editingProject.description,
@@ -894,7 +839,6 @@ export default {
             }
         },
 
-        // Delete Project Modal Methods
         deleteProject() {
             this.deleteConfirmation = '';
             this.$refs.deleteProjectModal.showModal();
@@ -911,7 +855,7 @@ export default {
             }
 
             try {
-                const res = await axios.delete('http://localhost/IPT_FINAL_PROJ/backend/index.php/delete-project', {
+                const res = await axios.delete('https://act-track.x10.mx/index.php/delete-project', {
                     data: { project_id: this.selectedProject.project_id }
                 });
 
@@ -930,73 +874,22 @@ export default {
             }
         },
 
-        // Enhanced Add/Edit Task Modal Methods (replace existing ones)
-        openAddTaskModal() {
-            this.newTask = {
-                title: '',
-                description: '',
-                start_date: '',
-                due_date: '',
-                status: 'Not Started'
-            };
-            this.$refs.addTaskModal.showModal();
+        // Utility Methods
+        currentUser() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            return user.user_id;
         },
 
-        editTask(task) {
-            this.newTask = {
-                task_id: task.task_id,
-                title: task.title,
-                description: task.description,
-                start_date: task.start_date || '',
-                due_date: task.due_date || '',
-                status: task.status
-            };
-            this.$refs.addTaskModal.showModal();
+        handleSuccess(message) {
+            this.success = message;
+            this.error = '';
+            // alert(this.success);
         },
 
-        async createTask() {
-            try {
-                const res = await axios.post('http://localhost/IPT_FINAL_PROJ/backend/index.php/create-task-in-projects', {
-                    project_id: this.selectedProject.project_id,
-                    title: this.newTask.title,
-                    description: this.newTask.description,
-                    start_date: this.newTask.start_date || null,
-                    due_date: this.newTask.due_date || null
-                });
-
-                if (res.data.success) {
-                    this.handleSuccess('Task created successfully!');
-                    this.closeAddTaskModal();
-                    this.fetchTasksByProject(this.selectedProject.project_id);
-                } else {
-                    this.handleError(res.data.message || 'Failed to create task');
-                }
-            } catch (error) {
-                this.handleError('Error creating task');
-            }
-        },
-
-        async updateTask() {
-            try {
-                const res = await axios.put('http://localhost/IPT_FINAL_PROJ/backend/index.php/update-task-in-projects', {
-                    task_id: this.newTask.task_id,
-                    title: this.newTask.title,
-                    description: this.newTask.description,
-                    start_date: this.newTask.start_date || null,
-                    due_date: this.newTask.due_date || null,
-                    status: this.newTask.status
-                });
-
-                if (res.data.success) {
-                    this.handleSuccess('Task updated successfully!');
-                    this.closeAddTaskModal();
-                    this.fetchTasksByProject(this.selectedProject.project_id);
-                } else {
-                    this.handleError(res.data.message || 'Failed to update task');
-                }
-            } catch (error) {
-                this.handleError('Error updating task');
-            }
+        handleError(message) {
+            this.error = message;
+            this.success = '';
+            // alert(this.error);
         }
     }
 }

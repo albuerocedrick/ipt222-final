@@ -11,6 +11,8 @@ import Tasks from '../views/Main/Tasks.vue'
 import Projects from '../views/Main/Projects.vue'
 import Calendar from '../views/Main/Calendar.vue'
 import Settings from '../views/Main/Settings.vue'
+import Notifications from '../views/Main/Notifications.vue'
+import AboutUs from '../views/AboutUs.vue'
 
 const routes = [
     {
@@ -29,6 +31,12 @@ const routes = [
       path: '/signup',
       name: 'SignUp',
       component: SignUp,
+      meta: { guestOnly: true }
+    },
+    {
+      path: '/aboutus',
+      name: 'AboutUs',
+      component: AboutUs,
       meta: { guestOnly: true }
     },
     {
@@ -58,6 +66,11 @@ const routes = [
           name: 'Settings',
           component: Settings,
           
+        },
+        {
+          path: 'notifications',
+          name: 'Notifications',
+          component: Notifications,
         },
         // {
         //   path: 'calendar',
